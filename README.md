@@ -1,6 +1,6 @@
 # RuseCruise
 
-Maven Dependencies
+Maven Dependencies:
   Add necessary .jar files to run
   Results in a .jar file
   Run the resulting .jar file in command line (for now as of 3/6/18)
