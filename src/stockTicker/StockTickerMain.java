@@ -14,17 +14,7 @@ import org.json.JSONObject;
 public class StockTickerMain {
 
 		public static void main(String[] args) {
-			try {
-				URL url = new URL ("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=TCS&outputsize=full&apikey=UUX1LQNOWRPP64V9");
-				JSONObject json = new JSONObject(url);
-				System.out.println(json);
-				
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			finally {
-				System.out.println("Done");
-			}
+			APIcall newCall = new APIcall("GOOGL", "TIME_SERIES_DAILY");
+			newCall.returnAPI("Meta Data");
 		}
 }
