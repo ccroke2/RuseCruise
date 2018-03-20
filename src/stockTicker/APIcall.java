@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class APIcall {
 		
-		String stockName;
+		String stockName;	//Hello
 		String function;
 		String url_string;
 		static String API_KEY = "UUX1LQNOWRPP64V9";
