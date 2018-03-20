@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
 
 public class APIcall {
 		
-		String stockName;	//Hello
+		String stockName;	//Hello, WORRRRRLLLLLLDDD
 		ArrayList<String> sNames = new ArrayList<String>();
 		String url_string;
 		String resultJ;
