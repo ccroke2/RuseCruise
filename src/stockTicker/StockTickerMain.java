@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 //UUX1LQNOWRPP64V9 Alpha Vantage API key
 
@@ -15,15 +16,24 @@ public class StockTickerMain {
 		APIcall daily = new APIcall();
 		
 		// This gets today's date
+		TimeZone timeZone = TimeZone.getTimeZone("US/Eastern");
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setTimeZone(timeZone);
 		Date date = new Date();
 		String d = (String)dateFormat.format(date);
+		
 		
 		// Single Stock info example (With printing final vector)
 		// s becomes a vector 
 		ArrayList<String> s = new ArrayList<String>();
 		s = daily.returnAPI_single("GOOGL", d);
 		System.out.println(s);
+		 
+		System.out.println();
+		
+		//Percentage
+		double perc = daily.stockPercent("AAPL");
+		System.out.println(perc);
 		
 		System.out.println();
 		
