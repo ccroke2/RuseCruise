@@ -18,11 +18,11 @@ import java.util.TimeZone;
 
 public class StockTickerMain extends JFrame{
 
-	JPanel screen = new JPanel();
+	
 	
 	public StockTickerMain() { 
 		setTitle("Stock Ticker");
-		add(screen);
+		add(new LoginScreen());
 	}
 	
 	
