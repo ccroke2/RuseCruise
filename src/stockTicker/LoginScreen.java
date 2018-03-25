@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.JPanel;
 
-// Action Listener still needs HomeScreen to be completed.
+// ActionListener still needs HomeScreen to be completed.
 public class LoginScreen extends JPanel {
 	
 	//private BufferedImage ruiseCruiseLogo = ImageIO.read(new ... );
