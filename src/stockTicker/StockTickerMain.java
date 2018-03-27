@@ -18,13 +18,8 @@ import java.text.SimpleDateFormat;
 
 // help with JSON reading/parsing-- http://www.studytrails.com/java/json/java-json-simple/
 
-<<<<<<< HEAD
-public class StockTickerMain extends JFrame{
-=======
 public class StockTickerMain extends JFrame {
 
->>>>>>> refs/remotes/origin/master
-	
 	static Dimension frameSize = new Dimension(450,600);
 	CardLayout cl = new CardLayout();
 	LoginScreen2 logScreen = new LoginScreen2();

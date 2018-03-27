@@ -20,9 +20,6 @@ public class LoginScreen extends JPanel {
 	private JPasswordField jpfPassword = new JPasswordField(32);
 		
 	public void createFrame() {
-<<<<<<< HEAD
-	        
-=======
 	        EventQueue.invokeLater(new Runnable() {
 	            @Override
 	            public void run() {
@@ -36,7 +33,6 @@ public class LoginScreen extends JPanel {
 	                frame.setResizable(false);
 	            }
 	        });
->>>>>>> refs/remotes/origin/master
 	    }
 	 
 	public LoginScreen() {
