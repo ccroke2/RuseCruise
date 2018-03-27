@@ -42,9 +42,10 @@ public class StockTickerMain extends JFrame{
 		
 	}
 	
-	public void setCard() {
-		cl.next(cardPanel);
-		System.out.println("change card");
+	public void setCard(String card) {
+		cl.show(cardPanel, "home");
+		System.out.println(card);
+		cl.show(cardPanel, "home");
 	}
 	
 	

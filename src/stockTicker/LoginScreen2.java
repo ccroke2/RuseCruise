@@ -36,7 +36,11 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 	private char[] inputPassword;
 	private String displayPassword = "w3lcom3Aboard!";
 		
+	
+	
 	public LoginScreen2() {
+		
+		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new LineBorder(Color.BLACK, 5));
 		add(panel);
@@ -75,7 +79,7 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 			if(Arrays.equals(inputPassword, masterPassword)) {
 				System.out.println("That's the right one!");
 				StockTickerMain mainClass = new StockTickerMain();
-				mainClass.setCard();
+				mainClass.setCard("home");
 			} else {
 				JOptionPane.showMessageDialog(null,
 						"That password is incorrect. Please try again",
