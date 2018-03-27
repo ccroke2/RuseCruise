@@ -17,12 +17,34 @@ import java.util.TimeZone;
 // help with JSON reading/parsing-- http://www.studytrails.com/java/json/java-json-simple/
 
 public class StockTickerMain extends JFrame{
-
 	
+	static Dimension frameSize = new Dimension(450,600);
+	CardLayout cl = new CardLayout();
+	LoginScreen2 logScreen = new LoginScreen2(this);
+	HomeScreen mainScreen = new HomeScreen();
+	JPanel cardPanel = new JPanel();
+	//String panelShow = "login";
 	
 	public StockTickerMain() { 
 		setTitle("Stock Ticker");
-		add(new LoginScreen());
+		add(cardPanel);
+		
+		cardPanel.setLayout(cl);
+		cardPanel.add(mainScreen, "home");
+		cardPanel.add(logScreen, "login");
+		cl.show(cardPanel, "home");
+		cl.next(cardPanel);
+		
+		//add(new LoginScreen2());
+		ImageIcon icon = new ImageIcon ("C:\\Users\\kaitl\\Desktop\\iconRC.png");
+		setIconImage(icon.getImage());
+		
+		
+	}
+	
+	public void setCard() {
+		cl.next(cardPanel);
+		System.out.println("change card");
 	}
 	
 	
@@ -30,10 +52,11 @@ public class StockTickerMain extends JFrame{
 		 EventQueue.invokeLater(new Runnable(){
 	            public void run(){
 	            StockTickerMain t = new StockTickerMain();
-	            t.setLocation(470, 220);
+	            t.setLocation(622, 180);
 	            t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	            t.setSize(900,600);
-	            t.setResizable(false);
+	            t.setSize(frameSize);
+	            t.setResizable(true);
+	            t.pack();
 	            t.setVisible(true);
 	             }
 	        });
