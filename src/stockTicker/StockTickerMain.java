@@ -4,19 +4,26 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 
-/*
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.lang.Object;
+import java.util.Comparator;
+import java.util.SortedMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Collections;
 import java.util.Date;
-import java.util.TimeZone;
-*/
+import java.text.SimpleDateFormat;
 
 //UUX1LQNOWRPP64V9 Alpha Vantage API key
 
 // help with JSON reading/parsing-- http://www.studytrails.com/java/json/java-json-simple/
 
+<<<<<<< HEAD
 public class StockTickerMain extends JFrame{
+=======
+public class StockTickerMain extends JFrame {
+
+>>>>>>> refs/remotes/origin/master
 	
 	static Dimension frameSize = new Dimension(450,600);
 	CardLayout cl = new CardLayout();
@@ -49,7 +56,8 @@ public class StockTickerMain extends JFrame{
 	
 	
 	public static void main(String[] args) {
-		 EventQueue.invokeLater(new Runnable(){
+
+		EventQueue.invokeLater(new Runnable(){
 	            public void run(){
 	            StockTickerMain t = new StockTickerMain();
 	            t.setLocation(622, 180);
@@ -62,8 +70,8 @@ public class StockTickerMain extends JFrame{
 	        });
 	    }
 		
-		
-		/*APIcall daily = new APIcall();
+		/*
+		APIcall daily = new APIcall();
 		
 		// This gets today's date
 		TimeZone timeZone = TimeZone.getTimeZone("US/Eastern");
@@ -98,5 +106,10 @@ public class StockTickerMain extends JFrame{
 		ArrayList<String> k = new ArrayList<String>();
 		k = daily.returnAPI_batch(kList);
 		System.out.println(k);
+		
+		//One day of history
+		SortedMap<Date, Double> xList = new TreeMap<Date, Double>(Collections.reverseOrder());
+		xList = daily.singleHistory("GOOGL");
+		System.out.println(xList);
 		*/
 }

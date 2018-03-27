@@ -20,7 +20,23 @@ public class LoginScreen extends JPanel {
 	private JPasswordField jpfPassword = new JPasswordField(32);
 		
 	public void createFrame() {
+<<<<<<< HEAD
 	        
+=======
+	        EventQueue.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	                JFrame frame = new JFrame("Password Request");
+	                frame.setLayout(new BorderLayout(10, 10));
+	                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	                frame.add(jlblNewPass, BorderLayout.CENTER);
+	                frame.setSize(300, 100);
+	                frame.setLocationRelativeTo(null);
+	                frame.setVisible(true);
+	                frame.setResizable(false);
+	            }
+	        });
+>>>>>>> refs/remotes/origin/master
 	    }
 	 
 	public LoginScreen() {
