@@ -21,34 +21,31 @@ import java.text.SimpleDateFormat;
 public class StockTickerMain extends JFrame {
 
 	static Dimension frameSize = new Dimension(450,600);
+	
+	LoginScreen2 logScreen;
+	HomeScreen mainScreen;
 	CardLayout cl = new CardLayout();
-	LoginScreen2 logScreen = new LoginScreen2();
-	HomeScreen mainScreen = new HomeScreen();
 	JPanel cardPanel = new JPanel();
-	//String panelShow = "login";
 	
 	public StockTickerMain() { 
 		setTitle("Stock Ticker");
 		add(cardPanel);
 		
-		cardPanel.setLayout(cl);
-		cardPanel.add(mainScreen, "home");
-		cardPanel.add(logScreen, "login");
-		cl.show(cardPanel, "home");
-		cl.next(cardPanel);
+		logScreen = new LoginScreen2(cl, cardPanel);
+		mainScreen = new HomeScreen(cl, cardPanel);
 		
 		//add(new LoginScreen2());
 		//ImageIcon icon = new ImageIcon (getClass().getResource("ruseCruiseLogo.png"));
 		//setIconImage(icon.getImage());
+
+		cardPanel.setLayout(cl);
+		cardPanel.add(logScreen, "login");
+		cardPanel.add(mainScreen, "home");
+		cl.show(cardPanel, "login");
+		
 		
 		
 	}
-	
-	public void setCard(String card) {
-		cl.show(cardPanel, "home");
-		System.out.println(card);
-	}
-	
 	
 	public static void main(String[] args) {
 
