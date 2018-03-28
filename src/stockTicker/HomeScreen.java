@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
+import stockTicker.HomeScreen2.Research;
+
 
 public class HomeScreen extends JPanel implements ActionListener {
 	
@@ -97,3 +99,31 @@ public class HomeScreen extends JPanel implements ActionListener {
 		
 	}*/
 }
+public class HomeScreen2 {
+	public class Research extends JPanel{
+		TextField Ctf = TextField(30);
+		JButton jb1 = new JButton("Research");
+		//jb1.addActionListener(new ActionListener() {
+			//public void actionPerformed(ActionEvent e) {
+				
+			//}
+		//})
+		public Research() {
+			add(Ctf);
+			add(jb1);
+		}
+	}
+	
+	public HomeScreen2() {
+		add(new Research(), BorderLayout.North);
+	}
+	
+	public static void main(String[] args) {
+		HomeScreen2 frame = new HomeScreen2();
+		fram.setSize(400,400);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+
