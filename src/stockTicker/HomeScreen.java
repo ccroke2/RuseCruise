@@ -1,27 +1,37 @@
 package stockTicker;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
 
-public class HomeScreen extends JPanel{
+public class HomeScreen extends JPanel implements ActionListener {
+	
 	private JScrollPane scrollPane = new JScrollPane();
-	private JButton butt = new JButton ("NEW BUTTON HERE!");
-	private JLabel text = new JLabel("Look at all of the Text here!");
+	private JButton butt = new JButton ("Log Out!");
+	private JLabel text = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
 	private JPanel pan = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
 	
-	public HomeScreen () {
-		setLayout(new FlowLayout());
+	CardLayout cl;
+	JPanel cardPanel;
+	
+	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
+		setLayout(new BorderLayout());
+		
+		cl = clin;
+		cardPanel = cardPanelin;
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		scrollPane.add(butt);
 		
-		add(scrollPane);
-		add(text);
-		add(pan);
-		add(butt);
+		add(scrollPane, BorderLayout.CENTER);
+		text.setHorizontalAlignment(JLabel.CENTER);
+		add(text, BorderLayout.NORTH);
+		//add(pan);
+		add(butt, BorderLayout.SOUTH);
+		butt.addActionListener(this);
 		
 		//creates all of the stock panels
 		JPanel stock1  = new JPanel();
@@ -72,6 +82,15 @@ public class HomeScreen extends JPanel{
 	
 	}
 	
+	//ActionListener for Enter and NewUser buttons, creates DialogBoxes
+		@Override
+		public void actionPerformed (ActionEvent e) {
+			if(e.getSource()==butt) {
+				cl.previous(cardPanel);
+			}
+		}
+			
+				
 	/*void enterStockPanel(String name, String abr, int value) {
 		
 		stockPanels.set(i, )

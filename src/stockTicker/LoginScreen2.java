@@ -15,7 +15,7 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 		@Override
 		protected void paintComponent (Graphics g) {
 			try {
-				BufferedImage ruseCruiseLogo = ImageIO.read(new File("C:\\Users\\kaitl\\Desktop\\ruseCruiseLogo.png"));
+				BufferedImage ruseCruiseLogo = ImageIO.read(new File("RuseCruise/src/ruseCruiseLogo.png"));
 				g.drawImage(ruseCruiseLogo, 25, 5, 220, 200, null);
 			}
 			catch(Exception e) {
@@ -27,8 +27,7 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 	
 	private JButton jbEnter   = new JButton("Enter");
 	private JButton jbNewUser = new JButton("New User?");
-	private JLabel jlbSlogan  = new JLabel("pack your bags!");
-	private JLabel jlbDisclaimer  = new JLabel("ALPHA 0.0.1");
+	private JLabel jlbDisclaimer  = new JLabel("ALPHA 1.0.0");
 	private JLabel jlbPassPrompt  = new JLabel("Enter the password:");
 	private JPasswordField passwordField = new JPasswordField(25);
 	
@@ -36,19 +35,21 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 	private char[] inputPassword;
 	private String displayPassword = "w3lcom3Aboard!";
 		
+	StockTickerMain mainClass;
+	JPanel cardPanel;
+	CardLayout cl;
 	
-	
-	public LoginScreen2() {
+	public LoginScreen2(CardLayout clin, JPanel cardPanelin) {
 		
+		//components needed to switch panels
+		cl = clin;
+		cardPanel = cardPanelin;
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new LineBorder(Color.BLACK, 5));
 		add(panel);
 		
-		//setLayout(new BorderLayout());
-		
 		//sets the alignment of all the components to be centered
-		//jlbSlogan.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jbEnter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jbNewUser.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jlbPassPrompt.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -77,15 +78,13 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 		if(e.getSource()==jbEnter) {
 			inputPassword = passwordField.getPassword();
 			if(Arrays.equals(inputPassword, masterPassword)) {
-				System.out.println("That's the right one!");
-				StockTickerMain mainClass = new StockTickerMain();
-				mainClass.setCard("home");
+					cl.next(cardPanel);
 			} else {
 				JOptionPane.showMessageDialog(null,
-						"That password is incorrect. Please try again",
+						"That password is incorrect. Please try again.",
 						"Incorrect Password", JOptionPane.WARNING_MESSAGE);
 			}
-			Arrays.fill(inputPassword,'0');
+			passwordField.setText("");
 		}
 		else if(e.getSource()== jbNewUser) {
 			JOptionPane.showMessageDialog(null, "Your password is "+displayPassword,
