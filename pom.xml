@@ -29,10 +29,16 @@
 
 
   </dependencies>
+  
 
   <name>StockTicker</name>
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+     <resource>
+       <directory>src/images</directory>
+     </resource>
+   </resources>
     <plugins>
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -50,9 +56,9 @@
      <plugin>
               <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.4</version>
-                        <configuration>
-                            <archive>
+                        <version>2.4</version>        
+    					<configuration>
+     						<archive>
                                 <!-- Configures the content of the created manifest -->
                                 <manifest>
                                     <!-- Adds the classpath to the created manifest -->
@@ -62,7 +68,7 @@
                                     <mainClass>stockTicker.StockTickerMain</mainClass>
                                 </manifest>
                             </archive>
-                        </configuration>
+						</configuration>
 
                     </plugin>
       <plugin>

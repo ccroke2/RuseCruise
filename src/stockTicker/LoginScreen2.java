@@ -15,8 +15,8 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 		@Override
 		protected void paintComponent (Graphics g) {
 			try {
-				BufferedImage ruseCruiseLogo = ImageIO.read(new File("C:\\Users\\kaitl\\Desktop\\ruseCruiseLogo.png"));
-				g.drawImage(ruseCruiseLogo, 25, 5, 220, 200, null);
+				BufferedImage ruseCruiseLogo = ImageIO.read(getClass().getResource("/ruseCruiseLogo.png"));
+				g.drawImage(ruseCruiseLogo, 50, 5, 220, 200, null);
 			}
 			catch(Exception e) {
 				System.out.println("Bad read");

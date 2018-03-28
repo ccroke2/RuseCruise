@@ -38,8 +38,8 @@ public class StockTickerMain extends JFrame {
 		cl.next(cardPanel);
 		
 		//add(new LoginScreen2());
-		ImageIcon icon = new ImageIcon ("C:\\Users\\kaitl\\Desktop\\iconRC.png");
-		setIconImage(icon.getImage());
+		//ImageIcon icon = new ImageIcon (getClass().getResource("ruseCruiseLogo.png"));
+		//setIconImage(icon.getImage());
 		
 		
 	}
