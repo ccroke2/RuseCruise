@@ -2,10 +2,16 @@ package stockTicker;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 
-import stockTicker.HomeScreen2.Research;
+//import stockTicker.HomeScreen2.Research;
 
 
 public class HomeScreen extends JPanel implements ActionListener {
@@ -14,6 +20,8 @@ public class HomeScreen extends JPanel implements ActionListener {
 	private JButton butt = new JButton ("Log Out!");
 	private JLabel text = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
 	private JPanel pan = new JPanel();
+	private JPanel search = new JPanel();
+	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
 	
 	CardLayout cl;
@@ -22,15 +30,42 @@ public class HomeScreen extends JPanel implements ActionListener {
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
 		setLayout(new BorderLayout());
 		
+		JTextField Ctf = new JTextField(30);
+		JButton jb1 = new JButton("Research");
+		search.add(text);
+		search.add(Ctf);
+		search.add(jb1);
 		cl = clin;
 		cardPanel = cardPanelin;
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		scrollPane.add(butt);
 		
+		//Prints out stocks from test_stocks.txt
+		try {
+			BufferedReader in =  new BufferedReader( 
+					new InputStreamReader(getClass().getClassLoader().getResourceAsStream("test_stocks.txt")));
+		
+
+		    String inputLine;
+		    allStocks.setLayout(new GridLayout(0,1));
+			while ((inputLine = in.readLine()) != null) {
+		        JLabel stock = new JLabel(inputLine);
+		       JPanel sPanel = new JPanel();
+		       sPanel.add(stock);
+		       allStocks.add(sPanel);
+			}		    
+		    in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		scrollPane.setViewportView(allStocks);
 		add(scrollPane, BorderLayout.CENTER);
 		text.setHorizontalAlignment(JLabel.CENTER);
-		add(text, BorderLayout.NORTH);
+		add(search, BorderLayout.NORTH);
 		//add(pan);
 		add(butt, BorderLayout.SOUTH);
 		butt.addActionListener(this);
@@ -99,6 +134,8 @@ public class HomeScreen extends JPanel implements ActionListener {
 		
 	}*/
 }
+
+/*
 public class HomeScreen2 {
 	public class Research extends JPanel{
 		TextField Ctf = TextField(30);
@@ -117,13 +154,13 @@ public class HomeScreen2 {
 	public HomeScreen2() {
 		add(new Research(), BorderLayout.North);
 	}
-	
+
 	public static void main(String[] args) {
 		HomeScreen2 frame = new HomeScreen2();
-		fram.setSize(400,400);
+		frame.setSize(400,400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
-}
+}*/
 
