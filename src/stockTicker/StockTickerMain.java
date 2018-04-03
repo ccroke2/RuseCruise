@@ -60,10 +60,15 @@ public class StockTickerMain extends JFrame {
 	            t.setVisible(true);
 	             }
 	        });
+		
 	    }
 		
 		/*
+		//One day of history
 		APIcall daily = new APIcall();
+		SortedMap<Date, Double> xList = new TreeMap<Date, Double>(Collections.reverseOrder());
+		xList = daily.history("SPOT", 4);
+		System.out.println(xList);
 		
 		// This gets today's date
 		TimeZone timeZone = TimeZone.getTimeZone("US/Eastern");
@@ -98,10 +103,5 @@ public class StockTickerMain extends JFrame {
 		ArrayList<String> k = new ArrayList<String>();
 		k = daily.returnAPI_batch(kList);
 		System.out.println(k);
-		
-		//One day of history
-		SortedMap<Date, Double> xList = new TreeMap<Date, Double>(Collections.reverseOrder());
-		xList = daily.singleHistory("GOOGL");
-		System.out.println(xList);
 		*/
 }
