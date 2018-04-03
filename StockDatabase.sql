@@ -41,7 +41,7 @@ CREATE TABLE portfolio
     stocklow		NUMERIC(20,2) NOT NULL,
     stockopen 	NUMERIC(20,2) NOT NULL,
     stockclose 	NUMERIC(20,2),
-	stockupdate	TIMESTAMP NOT NULL,
-    
+ 	stockupdate	TIMESTAMP NOT NULL,
+    numberofstocks NUMERIC(100),
     PRIMARY KEY (portfolioid),
     FOREIGN KEY (stockabrv) REFERENCES stockNames(stockabrev) );

@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.Iterator;
 import java.util.Comparator;
@@ -31,9 +35,22 @@ public class APIcall {
 		String resultJ;
 		static String API_KEY = "UUX1LQNOWRPP64V9";
 		
+		private Connection conn = null;
+		
 		//Constructor
 		public APIcall() {
-		
+			try {
+			    conn =
+			       DriverManager.getConnection("jdbc:mysql://localhost/test?" +
+			                                   "user=minty&password=greatsqldb");
+
+			    // Do something with the Connection
+			} catch (SQLException ex) {
+			    // handle any errors
+			    System.out.println("SQLException: " + ex.getMessage());
+			    System.out.println("SQLState: " + ex.getSQLState());
+			    System.out.println("VendorError: " + ex.getErrorCode());
+			}
 		}
 		
 		//JSON parse function
@@ -143,27 +160,58 @@ public class APIcall {
 		}
 		
 		//returns a mapping <time:value> for 1 day history (most recent time to open time)
-		public SortedMap<Date, Double> singleHistory(String stock) {
+		//key: 0-day, 1-week, 2-month, 3-year, 4-5year
+		public SortedMap<Date, Double> history(String stock, int keyLen) {
 			try {
-				url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock + "&interval=1min&outputsize=full&apikey=" + API_KEY;
+				String neededKey = "";
+				if (keyLen == 0) {
+					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock + "&interval=1min&outputsize=full&apikey=" + API_KEY;
+					neededKey = "Time Series (1min)";
+				}
+				else if (keyLen == 1 || keyLen == 2) {
+					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stock + "&apikey=" + API_KEY;
+					neededKey = "Time Series (Daily)";
+				}
+				else if (keyLen == 3) {
+					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + stock + "&apikey=" + API_KEY;
+					neededKey = "Weekly Time Series";
+				}
+				else if (keyLen == 4) {
+					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + stock + "&apikey=" + API_KEY;
+					neededKey = "Monthly Time Series";
+				}
+				else {
+					System.out.println("incorrect key in function");
+					return null;
+				}
 				
 				JSONObject jobj = JSONparse(url_string);
-				
+
 				ArrayList<Double> values = new ArrayList<Double>();
 				ArrayList<Date> dates = new ArrayList<Date>();
-				jobj = (JSONObject)jobj.get("Time Series (1min)");
+				jobj = (JSONObject)jobj.get(neededKey);
 				
 				String tempVal;
 				JSONObject temp0;
+				Date d1;
 				
 				SortedMap<Date, Double> hist = new TreeMap<Date, Double>(Collections.reverseOrder());
 				for(Iterator iterator = jobj.keySet().iterator(); iterator.hasNext();) {
 				    String key = (String) iterator.next();
-				    Date d1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(key);
+				    if (keyLen == 0) {
+				    		d1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(key);
+				    }
+				    else if(keyLen > 0 && keyLen < 5) {
+				    		d1 = new SimpleDateFormat("yyyy-MM-dd").parse(key);
+				    }
+				    else {
+				    		System.out.println("incorrect date format");
+				    		break;
+				    }
 				    dates.add(d1);
 				    temp0 = (JSONObject)jobj.get(key);
 				    values.add(Double.parseDouble((String)temp0.get("4. close")));
-				    hist = sorting(dates, values);
+				    hist = sorting(dates, values, keyLen);
 				}
 				return hist;
 			}
@@ -176,28 +224,57 @@ public class APIcall {
 			return null;
 		}
 		
-		private SortedMap<Date, Double> sorting(ArrayList<Date> d, ArrayList<Double> s) {
+		//key: 0-day, 1-week, 2-month, 3-year, 4-5year
+		private SortedMap<Date, Double> sorting(ArrayList<Date> d, ArrayList<Double> s, int key) {
 			SortedMap<Date, Double> hist = new TreeMap<Date, Double>(Collections.reverseOrder());
 			for (int i = 0; i< d.size(); i++) {
 				hist.put(d.get(i), s.get(i));
 			}
 			Date goalDate = hist.firstKey();
 			
+			long millisecondDif = 0;
+			if (key == 0) { //day
+				millisecondDif = 25200000L;
+			}
+			else if (key == 1) { //week
+				millisecondDif = 1209600000L;
+			}
+			else if (key == 2) { //month
+				millisecondDif = 2592000000L;
+			}
+			else if (key == 3) { //year
+				millisecondDif = 31556952000L;
+			}
+			else if (key == 4) { //5 year
+				millisecondDif = 157784630000L;
+			}
+			else {
+				System.out.println("incorrect key in function");
+				return null;
+			}
+			
 			Iterator<Date> iter = hist.keySet().iterator();
 	        while (iter.hasNext()) {
 	            Date str = iter.next();
-	            if(goalDate.getTime() - str.getTime() > 25200000 ) {
-					iter.remove();
-				}
+	            	if(goalDate.getTime() - str.getTime() > millisecondDif) {	
+	            		iter.remove();
+	            	}
+	        }
+	        while(key == 1 && hist.size() > 5) {
+	        		hist.remove(latestDate(hist.keySet()));
 	        }
 			return hist;
-			/*
-			for (int k = 0; k < d.length; d++) {
-				if (d.get(k) != goalDate) {
-					d.removeRange(k,k.length());
-					s.removeRange(k,k.length());
+		}
+		
+		private Date latestDate(Set<Date> s) {
+			Date[] s2 = s.toArray(new Date[s.size()]);
+			Date lateDate = s2[0];
+			for (int i = 0; i < s2.length; i++) {
+				if (lateDate.after(s2[i])) {
+					lateDate = s2[i];
 				}
-			}*/
+			}
+			return lateDate;
 		}
 		//Gets percent change in stock
 		//Calculated by (PrevClose-Current)/PrevClose * 100
