@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
+import java.sql.*;
 
 //import stockTicker.HomeScreen2.Research;
 
@@ -23,20 +24,37 @@ public class HomeScreen extends JPanel implements ActionListener {
 	private JPanel search = new JPanel();
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
-	
 	CardLayout cl;
 	JPanel cardPanel;
 	
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
 		setLayout(new BorderLayout());
 		
-		JTextField Ctf = new JTextField(30);
+		final JTextField Ctf = new JTextField("Using abbreviation",30);
 		JButton jb1 = new JButton("Research");
 		search.add(text);
 		search.add(Ctf);
 		search.add(jb1);
 		cl = clin;
 		cardPanel = cardPanelin;
+		String key = Ctf.getText();
+		jb1.addActionListener(new ActionListener()	{
+			public void actionperformed(ActionEvent e) {
+				try{
+				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
+				   String query = "SELECT * FROM stockname";
+				   if(key == query) {
+					   
+				   }
+				   
+				  }
+				catch{
+					
+				}
+			}
+			
+			
+		});
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		scrollPane.add(butt);
