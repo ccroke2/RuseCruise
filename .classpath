@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -17,5 +18,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="/Users/cmcox/Desktop/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kaitl/OneDrive - Washington College/18 SP ~~~/Software Engineering/jfreechart-1.0.19/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kaitl/OneDrive - Washington College/18 SP ~~~/Software Engineering/jfreechart-1.0.19/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kaitl/OneDrive - Washington College/18 SP ~~~/Software Engineering/jfreechart-1.0.19/jfreechart-1.0.19/lib/jfreechart-1.0.19-swt.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
