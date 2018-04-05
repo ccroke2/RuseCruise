@@ -53,7 +53,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 				
 				}
 			
-		});
+		}});
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		scrollPane.add(butt);
