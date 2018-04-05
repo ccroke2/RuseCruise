@@ -38,7 +38,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 		search.add(jb1);
 		cl = clin;
 		cardPanel = cardPanelin;
-<<<<<<< HEAD
+
 		final String key = Ctf.getText();
 		jb1.addActionListener(new ActionListener()	{
 			public void actionPerformed(ActionEvent e) {
@@ -50,24 +50,8 @@ public class HomeScreen extends JPanel implements ActionListener {
 				   
                                    }
 				catch(Exception ev){
-=======
-		String key = Ctf.getText();
-		jb1.addActionListener(new ActionListener()	{
-			public void actionperformed(ActionEvent e) {
-				try{
-				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
-				   String query = "SELECT * FROM stockname";
-				   if(key == query) {
-					   
-				   }
-				   
-				  }
-				catch{
->>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
-					
+				
 				}
-			}
-			
 			
 		});
 		
