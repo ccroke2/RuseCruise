@@ -10,53 +10,50 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
-import java.sql.*;
 
 //import stockTicker.HomeScreen2.Research;
-//Maybe this will make it work.
 
 
 public class HomeScreen extends JPanel implements ActionListener {
 	
 	private JScrollPane scrollPane = new JScrollPane();
-	private JButton butt = new JButton ("Log Out!");
-	private JLabel text = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
+	private JButton jbButt = new JButton("Log Out!");
+	private JButton jbInfo = new JButton("More jbInfo");
+	private JLabel jlbText = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
 	private JPanel pan = new JPanel();
 	private JPanel search = new JPanel();
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
+	
 	CardLayout cl;
 	JPanel cardPanel;
 	
+	private JPanel tempPanel = new JPanel();
+	
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
-		setLayout(new BorderLayout());
-		
-		final JTextField Ctf = new JTextField("Using abbreviation",30);
-		JButton jb1 = new JButton("Research");
-		search.add(text);
-		search.add(Ctf);
-		search.add(jb1);
 		cl = clin;
 		cardPanel = cardPanelin;
-
-		final String key = Ctf.getText();
-		jb1.addActionListener(new ActionListener()	{
-			public void actionPerformed(ActionEvent e) {
-				try{
-				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
-				   String query = "SELECT * FROM stockname";
-				   if(key == query) {	   
-				   }
-				   
-                                   }
-				catch(Exception ev){
-				
-				}
-			
-		}});
+		
+		setLayout(new BorderLayout());
+		add(tempPanel, BorderLayout.SOUTH);
+		tempPanel.setLayout(new GridLayout(1,2));
+		
+		//
+		tempPanel.add(jbInfo);
+		jbInfo.addActionListener(this);
+		tempPanel.add(jbButt);
+		jbButt.addActionListener(this);
+		//
+		
+		JTextField Ctf = new JTextField(30);
+		JButton jb1 = new JButton("Research");
+		search.add(jlbText);
+		search.add(Ctf);
+		search.add(jb1);
+		
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
-		scrollPane.add(butt);
+		//scrollPane.add(butt);
 		
 		//Prints out stocks from test_stocks.txt
 		try {
@@ -81,11 +78,16 @@ public class HomeScreen extends JPanel implements ActionListener {
 		
 		scrollPane.setViewportView(allStocks);
 		add(scrollPane, BorderLayout.CENTER);
-		text.setHorizontalAlignment(JLabel.CENTER);
+		jlbText.setHorizontalAlignment(JLabel.CENTER);
 		add(search, BorderLayout.NORTH);
 		//add(pan);
-		add(butt, BorderLayout.SOUTH);
+		
+		/*
+		 add(butt, BorderLayout.SOUTH);
 		butt.addActionListener(this);
+		add(jbInfo, BorderLayout.SOUTH);
+		jbInfo.addActionListener(this);
+		*/
 		
 		//creates all of the stock panels
 		JPanel stock1  = new JPanel();
@@ -139,8 +141,11 @@ public class HomeScreen extends JPanel implements ActionListener {
 	//ActionListener for Enter and NewUser buttons, creates DialogBoxes
 		@Override
 		public void actionPerformed (ActionEvent e) {
-			if(e.getSource()==butt) {
+			if(e.getSource()==jbButt) {
 				cl.previous(cardPanel);
+			}
+			if(e.getSource()==jbInfo) {
+				cl.next(cardPanel);
 			}
 		}
 			
