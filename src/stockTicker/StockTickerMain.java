@@ -49,6 +49,10 @@ public class StockTickerMain extends JFrame {
 	}
 	
 	public static void main(String[] args) {
+<<<<<<< HEAD
+=======
+		
+>>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
 		EventQueue.invokeLater(new Runnable(){
 	            public void run(){
 	            StockTickerMain t = new StockTickerMain();
@@ -104,6 +108,7 @@ public class StockTickerMain extends JFrame {
 
 		k = daily.returnAPI_batch(kList);
 		System.out.println(k);
+<<<<<<< HEAD
 		*/
 }
 		k = daily.returnAPI_batch(kList);
@@ -116,5 +121,7 @@ public class StockTickerMain extends JFrame {
 }
 		k = daily.returnAPI_batch(kList);
 		System.out.println(k);
+=======
+>>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
 		*/
 }
