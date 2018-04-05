@@ -84,6 +84,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private Crosshair xCrosshair;
 	private Crosshair yCrosshair;
 	private Font stockNameFont = new Font("AGENCY FB", Font.BOLD, 20);
+	private Border borderBase = new LineBorder(Color.GRAY, 1);
 	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin) {
 		cl = clin;
@@ -99,7 +100,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 		//Component formatting
 		jlbStockName.setFont(stockNameFont);
 		jlbStockAbr.setFont(stockNameFont);
-		stockInfoPanel.setBorder(new TitledBorder(stockName+" - "+stockAbr));
+		stockInfoPanel.setBorder(new TitledBorder(borderBase, stockName+" - "+stockAbr, TitledBorder.LEFT, TitledBorder.TOP, stockNameFont));
 		jtfStockNum.setEditable(false);
 		for(int i=0; i<9; i++) {
 			blank[i] = new JLabel("                 ");
