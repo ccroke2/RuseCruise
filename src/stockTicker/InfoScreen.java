@@ -86,6 +86,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private Font stockNameFont = new Font("AGENCY FB", Font.BOLD, 20);
 	private Border borderBase = new LineBorder(Color.GRAY, 1);
 	
+	//I need this to work too.
+	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin) {
 		cl = clin;
 		cardPanel = cardPanelin;

@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.sql.*;
 
 //import stockTicker.HomeScreen2.Research;
+//Maybe this will make it work.
 
 
 public class HomeScreen extends JPanel implements ActionListener {

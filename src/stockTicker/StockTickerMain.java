@@ -101,6 +101,19 @@ public class StockTickerMain extends JFrame {
 		kList.add("F");
 		kList.add("GE");
 		ArrayList<String> k = new ArrayList<String>();
+
+		k = daily.returnAPI_batch(kList);
+		System.out.println(k);
+		*/
+}
+		k = daily.returnAPI_batch(kList);
+		System.out.println(k);
+		*/
+}
+		k = daily.returnAPI_batch(kList);
+		System.out.println(k);
+		*/
+}
 		k = daily.returnAPI_batch(kList);
 		System.out.println(k);
 		*/
