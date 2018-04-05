@@ -26,7 +26,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
 	CardLayout cl;
 	JPanel cardPanel;
-	
+	static int columnNumber = 0;
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
 		setLayout(new BorderLayout());
 		
@@ -37,20 +37,30 @@ public class HomeScreen extends JPanel implements ActionListener {
 		search.add(jb1);
 		cl = clin;
 		cardPanel = cardPanelin;
-		String key = Ctf.getText();
+		final String key = Ctf.getText();
 		jb1.addActionListener(new ActionListener()	{
 			public void actionperformed(ActionEvent e) {
 				try{
 				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
-				   String query = "SELECT * FROM stockname";
-				   if(key == query) {
-					   
-				   }
-				   
-				  }
-				catch{
-					
-				}
+				   String query = "SELECT stockabrev FROM stocknames WHERE stockabrev='"+ key +"'";
+				   Statement stm = conn.createStatement();
+				   ResultSet rs = stm.executeQuery(query);
+				   ResultSetMetaData rsmd = rs.getMetaData();
+				   columnNumber = rsmd.getColumnCount();
+		            while (rs.next()) {
+		                String sId = rs.getString(1);
+		                String sName = rs.getString(3);
+		                
+		            }
+		        } catch (Exception e1) {
+		        System.err.println("Error");
+		        }
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 			
 			

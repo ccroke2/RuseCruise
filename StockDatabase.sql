@@ -4,8 +4,8 @@ use stockTicker;
 
 CREATE TABLE stockNames
 (	stockid   		CHAR(4)			 NOT NULL,
-  	stockname	VARCHAR(5) NOT NULL,
-	stockabrev	VARCHAR(5) NOT NULL,
+  	stockabrev	VARCHAR(5) NOT NULL,
+	stockname	VARCHAR(50) NOT NULL,
     
 	PRIMARY KEY (stockid) );
     
