@@ -18,7 +18,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 	
 	private JScrollPane scrollPane = new JScrollPane();
 	private JButton jbButt = new JButton("Log Out!");
-	private JButton jbInfo = new JButton("More jbInfo");
+	private JButton jbInfo = new JButton("More Info");
 	private JLabel jlbText = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
 	private JPanel pan = new JPanel();
 	private JPanel search = new JPanel();
