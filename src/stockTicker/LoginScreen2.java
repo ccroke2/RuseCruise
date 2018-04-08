@@ -1,4 +1,4 @@
-package stockTicker;
+ package stockTicker;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -62,6 +62,7 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 		panel.add(jlbPassPrompt);
 		panel.add(Box.createRigidArea(new Dimension(0,20)));
 		panel.add(passwordField);
+		passwordField.addActionListener(this);
 		panel.add(Box.createRigidArea(new Dimension(0,8)));
 		panel.add(jbEnter);
 		jbEnter.addActionListener(this);
@@ -76,7 +77,7 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 	//ActionListener for Enter and NewUser buttons, creates DialogBoxes
 	@Override
 	public void actionPerformed (ActionEvent e) {
-		if(e.getSource()==jbEnter) {
+		if(e.getSource() == passwordField || e.getSource()==jbEnter) {
 			inputPassword = passwordField.getPassword();
 			if(Arrays.equals(inputPassword, masterPassword)) {
 					cl.next(cardPanel);

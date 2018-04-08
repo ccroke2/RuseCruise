@@ -18,7 +18,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 	
 	private JScrollPane scrollPane = new JScrollPane();
 	private JButton jbButt = new JButton("Log Out!");
-	private JButton jbInfo = new JButton("More jbInfo");
+	private JButton jbInfo = new JButton("More Info");
 	private JLabel jlbText = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
 	private JPanel pan = new JPanel();
 	private JPanel search = new JPanel();
@@ -27,12 +27,42 @@ public class HomeScreen extends JPanel implements ActionListener {
 	
 	CardLayout cl;
 	JPanel cardPanel;
+<<<<<<< HEAD
+	static int columnNumber = 0;
+=======
 	
 	private JPanel tempPanel = new JPanel();
 	
+>>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
 		cl = clin;
 		cardPanel = cardPanelin;
+<<<<<<< HEAD
+
+		final String key = Ctf.getText();
+		jb1.addActionListener(new ActionListener()	{
+			public void actionPerformed(ActionEvent e) {
+				try{
+				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
+				   String query = "SELECT stockabrev FROM stocknames WHERE stockabrev='"+ key +"'";
+				   Statement stm = conn.createStatement();
+				   ResultSet rs = stm.executeQuery(query);
+				   ResultSetMetaData rsmd = rs.getMetaData();
+				   columnNumber = rsmd.getColumnCount();
+		            while (rs.next()) {
+		                String sId = rs.getString(1);
+		                String sName = rs.getString(3);
+		                
+		            }
+		        } catch (Exception e1) {
+		        System.err.println("Error");
+		        }
+			}
+
+			
+			
+		}});
+=======
 		
 		setLayout(new BorderLayout());
 		add(tempPanel, BorderLayout.SOUTH);
@@ -51,6 +81,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 		search.add(Ctf);
 		search.add(jb1);
 		
+>>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		//scrollPane.add(butt);
