@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TimeZone;
@@ -39,18 +40,21 @@ public class APIcall {
 		
 		//Constructor
 		public APIcall() {
-			try {
-			    conn =
-			       DriverManager.getConnection("jdbc:mysql://localhost/test?" +
-			                                   "user=minty&password=greatsqldb");
 
-			    // Do something with the Connection
-			} catch (SQLException ex) {
-			    // handle any errors
-			    System.out.println("SQLException: " + ex.getMessage());
-			    System.out.println("SQLState: " + ex.getSQLState());
-			    System.out.println("VendorError: " + ex.getErrorCode());
-			}
+		}
+		
+		public Date getPreviousWorkingDay(Date date) {
+		    Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+
+		    int dayOfWeek;
+		    do {
+		        cal.add(Calendar.DAY_OF_MONTH, -1);
+		        dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		        System.out.println(dayOfWeek);
+		    } while (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY);
+
+		    return cal.getTime();
 		}
 		
 		//JSON parse function
@@ -88,15 +92,19 @@ public class APIcall {
 		}
 		// returnAPI_single returns a list of the open, high, low, and close values for chosen stock.
 		// Parameters are s-> stock symbol and goal->date requested
-		public ArrayList<String> returnAPI_single(String s, String goal) {
+		public ArrayList<String> returnAPI_single(String s, Date goal) {
 			try {
 				stockName = s;
 				url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stockName + "&outputsize=compact&apikey=" + API_KEY;
 				
 				JSONObject jobj = JSONparse(url_string);
 				
+				Date d1 = goal;
+				d1 = getPreviousWorkingDay(d1);
+				String g = new SimpleDateFormat("yyyy-MM-dd").format(d1);
+				
 				JSONObject rJ = (JSONObject) jobj.get("Time Series (Daily)");
-				rJ = (JSONObject) rJ.get(goal);
+				rJ = (JSONObject) rJ.get(g);
 				
 				ArrayList<String> values = new ArrayList<String>();
 				values.add((String) rJ.get("1. open"));
@@ -165,8 +173,8 @@ public class APIcall {
 			try {
 				String neededKey = "";
 				if (keyLen == 0) {
-					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock + "&interval=1min&outputsize=full&apikey=" + API_KEY;
-					neededKey = "Time Series (1min)";
+					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock + "&interval=5min&outputsize=full&apikey=" + API_KEY;
+					neededKey = "Time Series (5min)";
 				}
 				else if (keyLen == 1 || keyLen == 2) {
 					url_string = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stock + "&apikey=" + API_KEY;
@@ -306,7 +314,7 @@ public class APIcall {
 				d = (String)dateFormat.format(date);
 			}
 			ArrayList<String> closePriceList = new ArrayList<String>();
-			closePriceList = returnAPI_single(stock,d);
+			closePriceList = returnAPI_single(stock,date);
 			double closePrice = Double.parseDouble(closePriceList.get(3));
 			
 			return (curPrice - closePrice)/closePrice * 100;

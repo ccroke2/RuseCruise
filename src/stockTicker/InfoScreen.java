@@ -19,8 +19,18 @@ import org.jfree.data.time.*;
 import org.jfree.data.time.ohlc.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
+import org.jfree.chart.plot.Crosshair;
+import org.jfree.chart.panel.CrosshairOverlay;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.Axis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.axis.DateAxis;
 
-public class InfoScreen extends JPanel implements ActionListener, ChartMouseListener, ItemListener {
+import java.text.SimpleDateFormat;
+
+//ChartMouseListener
+public class InfoScreen extends JPanel implements ActionListener, ChartMouseListener, ItemListener{
 
 	CardLayout cl;
 	JPanel cardPanel;
@@ -38,17 +48,21 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	}
 	*/
 	private int stockNum = 0;
-	private int stockValueNum = 200;
-	private int stockReturn = stockValueNum * stockNum;
 	
-	private String stockName = "Stock Name";
-	private String stockAbr  = "STN";
-	private String stockValue   = " Current Value: "+"200";
-	private String stockOpen    = "Open: "+"00";
-	private String stockHigh    = "High: "+"11";
-	private String stockLow     = "Low: "+"22";
-	private String stockClose   = "Close: "+"33";
-	private String stockPerc    = "20%";
+	APIcall stockInfo = new APIcall();
+	private String stockName = "Alphabet Co.";
+	private String stockAbr  = "GOOGL";
+	private Date goalDate = new Date();
+	private ArrayList<String> allInfo = stockInfo.returnAPI_single(stockAbr, goalDate);
+	private double stockCurPrice = stockInfo.singleCurrentPrice(stockAbr);
+	private String stockValue   = " Current Value: "+ Double.toString(stockCurPrice);
+	private double stockValueNum = stockCurPrice;
+	private double stockReturn = stockValueNum * stockNum;
+	private String stockOpen    = "Open: " + allInfo.get(0);
+	private String stockHigh    = "High: " + allInfo.get(1);
+	private String stockLow     = "Low: " + allInfo.get(2);
+	private String stockClose   = "Close: " + (String)allInfo.get(3);
+	private String stockPerc    = Double.toString(stockInfo.stockPercent(stockAbr)) + "%";
 	private String timePeriod   = "Day";
 	private String timePrompt	= "Historical Data for the Last: ";
 	private String[] timeLabels = {"Day","Week","Month","Year","5 Years"};
@@ -56,7 +70,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private JLabel jlbStockName = new JLabel(stockName);
 	private JLabel jlbStockAbr  = new JLabel(" - "+stockAbr);
 	private JLabel jlbValue  = new JLabel(stockValue);
-	private JLabel jlbReturn = new JLabel("Stock Return: $"+Integer.toString(stockReturn));
+	private JLabel jlbReturn = new JLabel("Stock Return: $"+Double.toString(stockReturn));
 	private JLabel jlbOpen   = new JLabel(stockOpen);
 	private JLabel jlbHigh   = new JLabel(stockHigh);
 	private JLabel jlbLow    = new JLabel(stockLow);
@@ -85,6 +99,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private Crosshair yCrosshair;
 	private Font stockNameFont = new Font("AGENCY FB", Font.BOLD, 20);
 	private Border borderBase = new LineBorder(Color.GRAY, 1);
+	
+	public SimpleDateFormat s1 = new SimpleDateFormat("MM-dd-yyyy");
 	
 	//I need this to work too.
 	
@@ -150,32 +166,91 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//CHART CREATION METHODS\\
 	
 	private JFreeChart createChart(XYDataset dataset) {
-	        JFreeChart chart = ChartFactory.createXYLineChart("Value of "+stockName+
+	        JFreeChart chart = ChartFactory.createTimeSeriesChart("Value of "+stockName+
 	        		" Over the Last "+timePeriod+" ", 
 	            timePeriod, "Value", dataset);
+	        XYPlot plot = chart.getXYPlot();
+	        DateAxis axis = (DateAxis) plot.getDomainAxis();
+	        String dateFormat;
+	        if (timePeriod == "Day") {
+	    			dateFormat= "HH:mm";
+	        }
+		    else if(timePeriod == "Week") {
+		    		dateFormat = "MM-dd-YY";
+		    }
+		    else if(timePeriod == "Month") {
+		    		dateFormat = "MMM dd";
+		    }
+		    else if(timePeriod == "Year") {
+		    		dateFormat = "MMM YYY";
+		    }
+		    else if(timePeriod == "5 Years") {
+		    		dateFormat ="MMM YYY";
+		    }
+		    else {
+		    		dateFormat = "MM-dd-YY";
+		    }
+	        axis.setDateFormatOverride(new SimpleDateFormat(dateFormat));
 	    return chart;
 	}
 	//Collects data and creates data set: Will have to be revised with API/Db
-	private XYDataset createDataset(String stockName) {
-	    XYSeries series = new XYSeries(stockName);
-	    for (int x = 0; x < 10; x++) {
-	        series.add(x, x + Math.random() * 4.0);
+	private XYDataset createDataset(String stockName, String timeP) {
+		TimeSeries series1 = new TimeSeries("Value");
+	    APIcall data = new APIcall();
+	    int key;
+	   	SimpleDateFormat s2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    if (timeP == "Day") {
+	    		key = 0;
+	    		s1 = new SimpleDateFormat("HH:mm");
 	    }
-	    XYSeriesCollection dataset = new XYSeriesCollection(series);
+	    else if(timeP == "Week") {
+	    		key = 1;
+	    		s1 = new SimpleDateFormat("MM-dd-YY");
+	    }
+	    else if(timeP == "Month") {
+	    		key = 2;
+	    		s1 = new SimpleDateFormat("MMM dd");
+	    		s2 = new SimpleDateFormat("yyyy-MM-dd");
+	    }
+	    else if(timeP == "Year") {
+	    		key = 3;
+	    		s1 = new SimpleDateFormat("MMM YYY");
+	    }
+	    else if(timeP == "5 Years") {
+	    		key = 4;
+	    		s1 = new SimpleDateFormat("MMM YYY");
+	    }
+	    else {
+	    		key = 0;
+	    }
+	    SortedMap<Date, Double> hist = data.history(stockName, key);
+	    ArrayList<Date> dates = new ArrayList<Date>();
+	    ArrayList<Double> vals = new ArrayList<Double>();
+	    for(Iterator iterator = hist.keySet().iterator(); iterator.hasNext();) {
+	    		Date iat = (Date)iterator.next();
+	    		dates.add(iat);
+	    		vals.add(hist.get(iat));
+		}
+	    for (int x = 0; x < dates.size(); x++) {
+	        series1.add(new Minute(dates.get(x)), vals.get(x));
+	    }
+	    TimeSeriesCollection dataset = new TimeSeriesCollection();
+	    dataset.addSeries(series1);
 	    return dataset;
 	}
 	private JPanel createContent() {
-        JFreeChart chart = createChart(createDataset(stockName));
+        JFreeChart chart = createChart(createDataset(stockAbr, timePeriod));
         this.chartPanel = new ChartPanel(chart);
         this.chartPanel.addChartMouseListener(this);
         CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
         this.xCrosshair = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
-        this.xCrosshair.setLabelVisible(true);
+        this.xCrosshair.setLabelVisible(false);
         this.yCrosshair = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
         this.yCrosshair.setLabelVisible(true);
         crosshairOverlay.addDomainCrosshair(xCrosshair);
@@ -183,15 +258,16 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
         chartPanel.addOverlay(crosshairOverlay);
         return chartPanel;
     }
+
 	private void refreshChart() {
 		shellChartPanel.removeAll();
 		shellChartPanel.revalidate();
-		JFreeChart aChart = createChart(createDataset(stockName));
+		JFreeChart aChart = createChart(createDataset(stockAbr, timePeriod));
 		ChartPanel chartPanel = new ChartPanel(aChart);
 		chartPanel.addChartMouseListener(this);
 		CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
         this.xCrosshair = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
-        this.xCrosshair.setLabelVisible(true);
+        this.xCrosshair.setLabelVisible(false);
         this.yCrosshair = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
         this.yCrosshair.setLabelVisible(true);
         crosshairOverlay.addDomainCrosshair(xCrosshair);
@@ -223,18 +299,19 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
             if(e.getSource()==jbStockUp) {
             	stockNum++;
             	stockReturn = stockValueNum * stockNum;
-            	jlbReturn.setText("Stock Return: $"+Integer.toString(stockReturn));
+            	jlbReturn.setText("Stock Return: $"+Double.toString(stockReturn));
             	jtfStockNum.setText(Integer.toString(stockNum));
             }
             if(e.getSource()==jbStockDown && stockNum>0) {
         		stockNum--;
         		stockReturn = stockValueNum * stockNum;
-        		jlbReturn.setText("Stock Return: $"+Integer.toString(stockReturn));
+        		jlbReturn.setText("Stock Return: $"+Double.toString(stockReturn));
         		jtfStockNum.setText(Integer.toString(stockNum));
             }
     }
     
-    //ChartMouseListener for crosshairs
+    
+  //ChartMouseListener for crosshairs
     @Override
     public void chartMouseMoved(ChartMouseEvent e) {
         Rectangle2D dataArea = this.chartPanel.getScreenDataArea();
@@ -263,7 +340,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	    		else if (jcbxTimePeriod.getSelectedItem().equals("Month"))
 	    			timePeriod = "Month";
 	    		else if (jcbxTimePeriod.getSelectedItem().equals("Year"))
-	    			timePeriod = "Years";
+	    			timePeriod = "Year";
 	    		else if (jcbxTimePeriod.getSelectedItem().equals("5 Years")) 
 	    			timePeriod = "5 Years";
 	    		else
