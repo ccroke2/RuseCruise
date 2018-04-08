@@ -27,18 +27,16 @@ public class HomeScreen extends JPanel implements ActionListener {
 	
 	CardLayout cl;
 	JPanel cardPanel;
-<<<<<<< HEAD
+
 	static int columnNumber = 0;
-=======
+
 	
 	private JPanel tempPanel = new JPanel();
-	
->>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
+
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
 		cl = clin;
 		cardPanel = cardPanelin;
-<<<<<<< HEAD
-
+/*
 		final String key = Ctf.getText();
 		jb1.addActionListener(new ActionListener()	{
 			public void actionPerformed(ActionEvent e) {
@@ -61,8 +59,8 @@ public class HomeScreen extends JPanel implements ActionListener {
 
 			
 			
-		}});
-=======
+		}});*/
+
 		
 		setLayout(new BorderLayout());
 		add(tempPanel, BorderLayout.SOUTH);
@@ -81,7 +79,6 @@ public class HomeScreen extends JPanel implements ActionListener {
 		search.add(Ctf);
 		search.add(jb1);
 		
->>>>>>> branch 'master' of https://github.com/ccroke2/RuseCruise.git
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		//scrollPane.add(butt);
@@ -188,32 +185,5 @@ public class HomeScreen extends JPanel implements ActionListener {
 	}*/
 }
 
-/*
-public class HomeScreen2 {
-	public class Research extends JPanel{
-		TextField Ctf = TextField(30);
-		JButton jb1 = new JButton("Research");
-		//jb1.addActionListener(new ActionListener() {
-			//public void actionPerformed(ActionEvent e) {
-				
-			//}
-		//})
-		public Research() {
-			add(Ctf);
-			add(jb1);
-		}
-	}
-	
-	public HomeScreen2() {
-		add(new Research(), BorderLayout.North);
-	}
 
-	public static void main(String[] args) {
-		HomeScreen2 frame = new HomeScreen2();
-		frame.setSize(400,400);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
-}*/
 
