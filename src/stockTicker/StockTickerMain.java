@@ -24,6 +24,7 @@ public class StockTickerMain extends JFrame {
 	
 	LoginScreen2 logScreen;
 	HomeScreen mainScreen;
+	InfoScreen infoScreen;
 	CardLayout cl = new CardLayout();
 	JPanel cardPanel = new JPanel();
 	
@@ -33,26 +34,25 @@ public class StockTickerMain extends JFrame {
 		
 		logScreen = new LoginScreen2(cl, cardPanel);
 		mainScreen = new HomeScreen(cl, cardPanel);
+		infoScreen = new InfoScreen(cl, cardPanel);
 		
 		//add(new LoginScreen2());
-		//ImageIcon icon = new ImageIcon (getClass().getResource("ruseCruiseLogo.png"));
+		//ImageIcon icon = new ImageIcon (getClass().getResource("/iconRC.png"));
 		//setIconImage(icon.getImage());
 
 		cardPanel.setLayout(cl);
 		cardPanel.add(logScreen, "login");
 		cardPanel.add(mainScreen, "home");
+		cardPanel.add(infoScreen, "info");
 		cl.show(cardPanel, "login");
-		
-		
 		
 	}
 	
 	public static void main(String[] args) {
-		
 		EventQueue.invokeLater(new Runnable(){
 	            public void run(){
 	            StockTickerMain t = new StockTickerMain();
-	            t.setLocation(622, 180);
+	            t.setLocation(400, 180);
 	            t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            t.setSize(frameSize);
 	            t.setResizable(true);
@@ -101,7 +101,10 @@ public class StockTickerMain extends JFrame {
 		kList.add("F");
 		kList.add("GE");
 		ArrayList<String> k = new ArrayList<String>();
+
 		k = daily.returnAPI_batch(kList);
 		System.out.println(k);
+
 		*/
+
 }

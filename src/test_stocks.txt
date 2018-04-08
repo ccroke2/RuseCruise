@@ -1,0 +1,22 @@
+AAPL	Apple Inc.
+AMZN 	Amazon.com, Inc.
+BUD		Anheuser-Busch (Budweiser)
+CAKE	The Cheesecake Factory Incorporated
+CBRL	Cracker Barrel Old Country Store, Inc.
+CROX 	Crocs, Inc.
+DENN	Denny's Corporation
+DNKN	Dunkin' Brands Group, Inc.
+EBAY	eBay Inc.
+FB		Facebook, Inc.
+GOOGL	Alphabet Inc.
+HOG		Harley-Davidson Motorcycles
+INTC	Intel Corporation
+MMM		3M Company
+NDLS	Noodles & Company
+PZZA	Papa John's International, Inc.
+RRGB	Red Robin Gourmet Burgers, Inc.
+SFLY	Shutterfly, Inc.
+SNAP	Snap Inc.
+TRIP	TripAdvisor, Inc.
+WEN		Wendy's Company (The)
+Z		Zillow Group, Inc.

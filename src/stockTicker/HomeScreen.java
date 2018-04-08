@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.sql.*;
 
 //import stockTicker.HomeScreen2.Research;
+//Maybe this will make it work.
 
 
 public class HomeScreen extends JPanel implements ActionListener {
@@ -37,9 +38,10 @@ public class HomeScreen extends JPanel implements ActionListener {
 		search.add(jb1);
 		cl = clin;
 		cardPanel = cardPanelin;
+
 		final String key = Ctf.getText();
 		jb1.addActionListener(new ActionListener()	{
-			public void actionperformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				try{
 				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
 				   String query = "SELECT stockabrev FROM stocknames WHERE stockabrev='"+ key +"'";
@@ -57,14 +59,9 @@ public class HomeScreen extends JPanel implements ActionListener {
 		        }
 			}
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 			
 			
-		});
+		}});
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
 		scrollPane.add(butt);
