@@ -19,48 +19,22 @@ public class HomeScreen extends JPanel implements ActionListener {
 	private JScrollPane scrollPane = new JScrollPane();
 	private JButton jbButt = new JButton("Log Out!");
 	private JButton jbInfo = new JButton("More Info");
+	private JButton jbSearch = new JButton("Search");
 	private JLabel jlbText = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
 	private JPanel pan = new JPanel();
 	private JPanel search = new JPanel();
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
+	LoadDriver ld = new LoadDriver();
 	
 	CardLayout cl;
 	JPanel cardPanel;
-
-	static int columnNumber = 0;
-
 	
 	private JPanel tempPanel = new JPanel();
-
+	
 	public HomeScreen (CardLayout clin, JPanel cardPanelin) {
 		cl = clin;
 		cardPanel = cardPanelin;
-/*
-		final String key = Ctf.getText();
-		jb1.addActionListener(new ActionListener()	{
-			public void actionPerformed(ActionEvent e) {
-				try{
-				   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/StockDatabase");
-				   String query = "SELECT stockabrev FROM stocknames WHERE stockabrev='"+ key +"'";
-				   Statement stm = conn.createStatement();
-				   ResultSet rs = stm.executeQuery(query);
-				   ResultSetMetaData rsmd = rs.getMetaData();
-				   columnNumber = rsmd.getColumnCount();
-		            while (rs.next()) {
-		                String sId = rs.getString(1);
-		                String sName = rs.getString(3);
-		                
-		            }
-		        } catch (Exception e1) {
-		        System.err.println("Error");
-		        }
-			}
-
-			
-			
-		}});*/
-
 		
 		setLayout(new BorderLayout());
 		add(tempPanel, BorderLayout.SOUTH);
@@ -71,13 +45,13 @@ public class HomeScreen extends JPanel implements ActionListener {
 		jbInfo.addActionListener(this);
 		tempPanel.add(jbButt);
 		jbButt.addActionListener(this);
-		//
 		
 		JTextField Ctf = new JTextField(30);
-		JButton jb1 = new JButton("Research");
+		
 		search.add(jlbText);
 		search.add(Ctf);
-		search.add(jb1);
+		search.add(jbSearch);
+		jbSearch.addActionListener(this);
 		
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
@@ -92,7 +66,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 		    String inputLine;
 		    allStocks.setLayout(new GridLayout(0,1));
 			while ((inputLine = in.readLine()) != null) {
-		        JLabel stock = new JLabel(inputLine);
+		       JLabel stock = new JLabel(inputLine);
 		       JPanel sPanel = new JPanel();
 		       sPanel.add(stock);
 		       allStocks.add(sPanel);
@@ -166,7 +140,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 	
 	}
 	
-	//ActionListener for Enter and NewUser buttons, creates DialogBoxes
+	//ActionListener for Info, Search and Exit buttons, creates DialogBoxes
 		@Override
 		public void actionPerformed (ActionEvent e) {
 			if(e.getSource()==jbButt) {
@@ -174,6 +148,10 @@ public class HomeScreen extends JPanel implements ActionListener {
 			}
 			if(e.getSource()==jbInfo) {
 				cl.next(cardPanel);
+			}
+			if(e.getSource()==jbSearch) {
+				ld.readData();
+				ld.createFrame();
 			}
 		}
 			
@@ -185,5 +163,32 @@ public class HomeScreen extends JPanel implements ActionListener {
 	}*/
 }
 
+/*
+public class HomeScreen2 {
+	public class Research extends JPanel{
+		TextField Ctf = TextField(30);
+		JButton jb1 = new JButton("Research");
+		//jb1.addActionListener(new ActionListener() {
+			//public void actionPerformed(ActionEvent e) {
+				
+			//}
+		//})
+		public Research() {
+			add(Ctf);
+			add(jb1);
+		}
+	}
+	
+	public HomeScreen2() {
+		add(new Research(), BorderLayout.North);
+	}
 
+	public static void main(String[] args) {
+		HomeScreen2 frame = new HomeScreen2();
+		frame.setSize(400,400);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}*/
 
