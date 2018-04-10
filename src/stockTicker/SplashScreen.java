@@ -14,6 +14,7 @@ public class SplashScreen extends JPanel implements ActionListener {
 	
 	private String loadInfo = "Loading ...";
 	private JLabel jlbLoad = new JLabel(loadInfo);
+	private JLabel jbWait = new JLabel("Please Wait");
 	private JButton jbNext = new JButton("Next");
 	
 	JPanel cardPanel;
@@ -27,6 +28,8 @@ public class SplashScreen extends JPanel implements ActionListener {
 		
 		jlbLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(jlbLoad, BorderLayout.CENTER);
+		jlbWait.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(jlbWait, BorderLayout.EAST);
 		jbNext.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jbNext.addActionListener(this);
 		add(jbNext, BorderLayout.SOUTH);
