@@ -40,7 +40,7 @@ public class StockTickerMain extends JFrame {
 		
 		//add(new LoginScreen2());
 		//ImageIcon icon = new ImageIcon (getClass().getResource("/iconRC.png"));
-		//setIconImage(icon.getImage());
+		//setIconImage(icon.getImage());\\
 
 		cardPanel.setLayout(cl);
 		cardPanel.add(splScreen, "splash");

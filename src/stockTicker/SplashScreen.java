@@ -14,7 +14,7 @@ public class SplashScreen extends JPanel implements ActionListener {
 	
 	private String loadInfo = "Loading ...";
 	private JLabel jlbLoad = new JLabel(loadInfo);
-	private JLabel jbWait = new JLabel("Please Wait");
+	private JLabel jlbWait = new JLabel("Please Wait");
 	private JButton jbNext = new JButton("Next");
 	
 	JPanel cardPanel;
