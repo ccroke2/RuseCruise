@@ -102,9 +102,12 @@ public class APIcall {
 			
 			get = (jobj.get("high")).toString();
 			highPrice = Double.parseDouble(get);
-			lowPrice = ((Double)jobj.get("low"));
-			openPrice = ((Double)jobj.get("open"));
-			closePrice = ((Double)jobj.get("close"));
+			get = (jobj.get("low")).toString();
+			lowPrice = (Double.parseDouble(get));
+			get = (jobj.get("open")).toString();
+			openPrice = (Double.parseDouble(get));
+			get = (jobj.get("close")).toString();
+			closePrice = (Double.parseDouble(get));
 			cPrice = ((Double)jobj.get("latestPrice"));
 			stockFullName = (String)jobj.get("companyName");
 			double lastClose = (Double)jobj.get("previousClose");
