@@ -36,7 +36,7 @@ public class StockTickerMain extends JFrame {
 		splScreen = new SplashScreen(cl, cardPanel);
 		logScreen = new LoginScreen2(cl, cardPanel);
 		mainScreen = new HomeScreen(cl, cardPanel);
-		infoScreen = new InfoScreen(cl, cardPanel);
+		infoScreen = new InfoScreen(cl, cardPanel, "GOOGL");
 		
 		//add(new LoginScreen2());
 		//ImageIcon icon = new ImageIcon (getClass().getResource("/iconRC.png"));

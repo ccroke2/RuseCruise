@@ -141,4 +141,182 @@ public class LoadDriver {
 		     System.out.println("VendorError: " + ex.getErrorCode());
 		 }
 	}
+	
+	//key 0=new stock, 1=new high/low/open/close, 2=new current price, 3 = new stocks owned
+	//insertInfo = number of stocks owned now (can be used for other info if needed
+	//stockName is the abbreviation
+	public void API_insert(String stockName, int key, String insertInfo) {
+		try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } 
+	 catch (Exception ex) {
+           ex.printStackTrace();
+        }
+	 
+	 Connection conn = null;
+	 if (insertInfo == null) {
+		 insertInfo = "1";
+	 }
+	 try {
+		 conn = DriverManager.getConnection(DATABASE_URL, getProperties());
+
+	     // Do something with the Connection
+	     Statement stmt = null;
+	     ResultSet rs = null;
+
+	     try {/*
+	         stmt = conn.createStatement();
+	         APIcall newCall = new APIcall();
+	         ArrayList<String> APIres = new ArrayList<String>();
+	         APIres = newCall.returnAPI_single(stockName, new Date());
+	         double curPrice = newCall.singleCurrentPrice(stockName);
+	         //insert all info (new stock added)
+	         if(key == 0) {
+	        	 	rs = stmt.executeQuery("INSERT INTO portfolio (stockabrev, stockprice, stockhigh, stocklow, stockopen, stockclose, stockupdate, stocksowned)" + 
+	        	 			"VALUES ("+ stockName + "," + curPrice + "," + Double.parseDouble(APIres.get(1)) + "," + Double.parseDouble(APIres.get(2)) + "," + Double.parseDouble(APIres.get(0)) + "," + Double.parseDouble(APIres.get(3)) + "," + new Date(System.currentTimeMillis()) + "," + insertInfo + ");");
+	        	 	
+	         }
+	         //insert new open/close/high/low for current stock
+	         else if(key == 1) {
+	        	 	rs = stmt.executeQuery("UPDATE portfolio" + 
+	        	 			"SET stockhigh =" + Double.parseDouble(APIres.get(1)) + ", stocklow=" + Double.parseDouble(APIres.get(2))+", stockopen=" + Double.parseDouble(APIres.get(0)) + ", stockclose="+ Double.parseDouble(APIres.get(3)) + 
+	        	 			"WHERE stockabrev =" + stockName +";");
+	         }
+	         //insert new current values for current stock
+	         else if(key == 2) {
+	        	 	rs = stmt.executeQuery("UPDATE portfolio" + 
+	        	 			"SET stockprice = " + curPrice +
+	        	 			"WHERE stockabrev =" + stockName +";");
+	         }
+	         //insert new amount owned of current stock
+	         else if (key == 3) {
+	        	 	rs = stmt.executeQuery("UPDATE portfolio" + 
+	        	 			"SET stocksowned = " + Integer.parseInt(insertInfo) +
+	        	 			"WHERE stockabrev =" + stockName +";");
+	         } 
+	         */   
+	     }
+	     catch (Exception ex) {
+	         // handle any errors
+	         //System.out.println("SQLException: " + ex.getMessage());
+	         //System.out.println("SQLState: " + ex.getSQLState());
+	         //System.out.println("VendorError: " + ex.getErrorCode());
+	     }
+	     finally {
+	         // release resources in reverse-order of their creation if they are no-longer needed
+
+	         if (rs != null) {
+	             try {
+	                 rs.close();
+	             } 
+	             catch (SQLException sqlEx) {} // ignore
+
+	             rs = null;
+	         }
+
+	         if (stmt != null) {
+	             try {
+	                 stmt.close();
+	             } 
+	             catch (SQLException sqlEx) {} // ignore
+
+	             stmt = null;
+	         }
+	     } 
+	 }
+	     catch (SQLException ex) {
+	     // handle any errors
+	     System.out.println("SQLException: " + ex.getMessage());
+	     System.out.println("SQLState: " + ex.getSQLState());
+	     System.out.println("VendorError: " + ex.getErrorCode());
+	 }
+	}
+	
+	//get
+	public double getInfo(String stockName, int key) {
+		try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } 
+	 catch (Exception ex) {
+           ex.printStackTrace();
+        }
+	 
+	 Connection conn = null;
+	 
+	 try {
+		 conn = DriverManager.getConnection(DATABASE_URL, getProperties());
+
+	     // Do something with the Connection
+	     Statement stmt = null;
+	     ResultSet rs = null;
+
+	     try {/*
+	         stmt = conn.createStatement();
+	         APIcall newCall = new APIcall();
+	         ArrayList<String> APIres = new ArrayList<String>();
+	         APIres = newCall.returnAPI_single(stockName, new Date());
+	         double curPrice = newCall.singleCurrentPrice(stockName);
+	         //return high
+	         if(key == 0) {
+	        	 	rs = stmt.executeQuery("SELECT stockhigh FROM portfolio WHERE stockabrev = " + stockName + ";");
+	         }
+	         //return low
+	         else if(key == 1) {
+	        	 	rs = stmt.executeQuery("SELECT stocklow FROM portfolio WHERE stockabrev = " + stockName + ";");
+	         }
+	         //return close
+	         else if(key == 2) {
+	        	 	rs = stmt.executeQuery("SELECT stockclose FROM portfolio WHERE stockabrev = " + stockName + ";");
+	         }
+	         //return open
+	         else if (key == 3) {
+	        	 	rs = stmt.executeQuery("SELECT stockopen FROM portfolio WHERE stockabrev = " + stockName + ";");
+	         } 
+	         //return current
+	         else if (key == 4) {
+	        	 	rs = stmt.executeQuery("SELECT stockprice FROM portfolio WHERE stockabrev = " + stockName + ";");
+	         }
+	         //return number owned
+	         else if (key == 5) {
+	        	 	rs = stmt.executeQuery("SELECT stocksowned FROM portfolio WHERE stockabrev = " + stockName + ";");
+	         }
+	        return Double.parseDouble(rs.toString());*/
+	     }
+	     catch (Exception ex) {
+	         // handle any errors
+	         //System.out.println("SQLException: " + ex.getMessage());
+	         //System.out.println("SQLState: " + ex.getSQLState());
+	         //System.out.println("VendorError: " + ex.getErrorCode());
+	     }
+	     finally {
+	         // release resources in reverse-order of their creation if they are no-longer needed
+
+	         if (rs != null) {
+	             try {
+	                 rs.close();
+	             } 
+	             catch (SQLException sqlEx) {} // ignore
+
+	             rs = null;
+	         }
+
+	         if (stmt != null) {
+	             try {
+	                 stmt.close();
+	             } 
+	             catch (SQLException sqlEx) {} // ignore
+
+	             stmt = null;
+	         }
+	     } 
+	 }
+	     catch (SQLException ex) {
+	     // handle any errors
+	     System.out.println("SQLException: " + ex.getMessage());
+	     System.out.println("SQLState: " + ex.getSQLState());
+	     System.out.println("VendorError: " + ex.getErrorCode());
+	 }
+	 return -100000000;
+	}
+
 }

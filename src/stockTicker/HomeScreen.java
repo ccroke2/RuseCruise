@@ -65,12 +65,26 @@ public class HomeScreen extends JPanel implements ActionListener {
 
 		    String inputLine;
 		    allStocks.setLayout(new GridLayout(0,1));
+		    ArrayList<APIcall> stocks = new ArrayList<APIcall>();
+		    ArrayList<String> sAbs = new ArrayList<String>();
+		    ArrayList<JPanel> pnlList = new ArrayList<JPanel>();
 			while ((inputLine = in.readLine()) != null) {
-		       JLabel stock = new JLabel(inputLine);
-		       JPanel sPanel = new JPanel();
-		       sPanel.add(stock);
-		       allStocks.add(sPanel);
-			}		    
+				JPanel stockNamesPnl = new JPanel();
+				stockNamesPnl.setLayout(new FlowLayout());
+		       String stock = inputLine.substring(0, inputLine.indexOf("\t"));
+		       stockNamesPnl.add(new JLabel(stock));
+		       APIcall sCall = new APIcall(stock);
+		       stockNamesPnl.add(new JLabel(sCall.stockFullName));
+		       stocks.add(sCall);
+		       sAbs.add(stock);
+		       pnlList.add(stockNamesPnl);
+			}
+			APIcall x = new APIcall();
+			for (int i = 0; i < stocks.size(); i++) {
+				StockPanel spnl = new StockPanel(stocks.get(i).stockName);
+			    allStocks.add(spnl.getStockPanel(pnlList.get(i)));
+			}
+			
 		    in.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -90,52 +104,6 @@ public class HomeScreen extends JPanel implements ActionListener {
 		add(jbInfo, BorderLayout.SOUTH);
 		jbInfo.addActionListener(this);
 		*/
-		
-		//creates all of the stock panels
-		JPanel stock1  = new JPanel();
-		JPanel stock2  = new JPanel();
-		JPanel stock3  = new JPanel();
-		JPanel stock4  = new JPanel();
-		JPanel stock5  = new JPanel();
-		JPanel stock6  = new JPanel();
-		JPanel stock7  = new JPanel();
-		JPanel stock8  = new JPanel();
-		JPanel stock9  = new JPanel();
-		JPanel stock10 = new JPanel();
-		JPanel stock11 = new JPanel();
-		JPanel stock12 = new JPanel();
-		JPanel stock13 = new JPanel();
-		JPanel stock14 = new JPanel();
-		JPanel stock15 = new JPanel();
-		JPanel stock16 = new JPanel();
-		JPanel stock17 = new JPanel();
-		JPanel stock18 = new JPanel();
-		JPanel stock19 = new JPanel();
-		JPanel stock20 = new JPanel();
-		
-		//adds panels to the ArrayList
-		stockPanels.add(stock1);
-		stockPanels.add(stock2);
-		stockPanels.add(stock3);
-		stockPanels.add(stock4);
-		stockPanels.add(stock5);
-		stockPanels.add(stock6);
-		stockPanels.add(stock7);
-		stockPanels.add(stock8);
-		stockPanels.add(stock9);
-		stockPanels.add(stock10);
-		stockPanels.add(stock11);
-		stockPanels.add(stock12);
-		stockPanels.add(stock13);
-		stockPanels.add(stock14);
-		stockPanels.add(stock15);
-		stockPanels.add(stock16);
-		stockPanels.add(stock17);
-		stockPanels.add(stock18);
-		stockPanels.add(stock19);
-		stockPanels.add(stock20);
-		
-		//enterStockPanel("Google", "GGL", 15);
 		
 	
 	}

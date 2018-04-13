@@ -49,35 +49,33 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	*/
 	private int stockNum = 0;
 	
-	APIcall stockInfo = new APIcall();
-	private String stockName = "Alphabet Co.";
-	private String stockAbr  = "GOOGL";
-	private Date goalDate = new Date();
-	private ArrayList<String> allInfo = stockInfo.returnAPI_single(stockAbr, goalDate);
-	private double stockCurPrice = stockInfo.singleCurrentPrice(stockAbr);
-	private String stockValue   = " Current Value: "+ Double.toString(stockCurPrice);
-	private double stockValueNum = stockCurPrice;
-	private double stockReturn = stockValueNum * stockNum;
-	private String stockOpen    = "Open: " + allInfo.get(0);
-	private String stockHigh    = "High: " + allInfo.get(1);
-	private String stockLow     = "Low: " + allInfo.get(2);
-	private String stockClose   = "Close: " + (String)allInfo.get(3);
-	private String stockPerc    = Double.toString(stockInfo.stockPercent(stockAbr)) + "%";
+	private String stockName;
+	private String stockAbr;
+	private double stockCurPrice;
+	private String stockValue;
+	private double stockValueNum;
+	private double stockReturn;
+	private String stockOpen;
+	private String stockHigh;
+	private String stockLow;
+	private String stockClose;
+	private String stockPerc;
 	private String timePeriod   = "Day";
 	private String timePrompt	= "Historical Data for the Last: ";
-	private String[] timeLabels = {"Day","Week","Month","Year","5 Years"};
+	private String[] timeLabels = {"Day","Month","Year","5 Years", "Year to Date"};
 	
-	private JLabel jlbStockName = new JLabel(stockName);
-	private JLabel jlbStockAbr  = new JLabel(" - "+stockAbr);
-	private JLabel jlbValue  = new JLabel(stockValue);
-	private JLabel jlbReturn = new JLabel("Stock Return: $"+Double.toString(stockReturn));
-	private JLabel jlbOpen   = new JLabel(stockOpen);
-	private JLabel jlbHigh   = new JLabel(stockHigh);
-	private JLabel jlbLow    = new JLabel(stockLow);
-	private JLabel jlbClose  = new JLabel(stockClose);
-	private JLabel jlbPerc   = new JLabel(stockPerc);
-	private JLabel jlbTimePrompt = new JLabel(timePrompt);
-	private JLabel[] blank   = new JLabel[10];
+	private JLabel jlbStockName;
+	private JLabel jlbStockAbr;
+	private JLabel jlbValue;
+	private JLabel jlbReturn;
+	private JLabel jlbOpen;
+	private JLabel jlbHigh;
+	private JLabel jlbLow;
+	private JLabel jlbClose;
+	private JLabel jlbPerc;
+	private JLabel jlbTimePrompt;
+	private JLabel[] blank = new JLabel[10];
+	
 	
 	private JButton jbBack   = new JButton("Back");
 	private JButton jbDelete = new JButton("Delete");
@@ -100,70 +98,103 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private Font stockNameFont = new Font("AGENCY FB", Font.BOLD, 20);
 	private Border borderBase = new LineBorder(Color.GRAY, 1);
 	
+	private TimeSeries seriesD = new TimeSeries("Value");
+	private TimeSeries seriesYTD = new TimeSeries("Value");
+	private TimeSeries seriesM = new TimeSeries("Value");
+	private TimeSeries seriesY = new TimeSeries("Value");
+	private TimeSeries series5Y = new TimeSeries("Value");
+	
 	public SimpleDateFormat s1 = new SimpleDateFormat("MM-dd-yyyy");
 	
 	//I need this to work too.
 	
-	public InfoScreen(CardLayout clin, JPanel cardPanelin) {
-		cl = clin;
-		cardPanel = cardPanelin;
-		
-		//Panel Formatting
-		setLayout(new BorderLayout());
-		stockInfoPanel.setLayout(new GridLayout(3,5));
-		shellChartPanel.setLayout(new BorderLayout());
-		buttonPanel.setLayout(new GridLayout(1,2));
-		shellChartPanel.setBackground(Color.WHITE);
-		
-		//Component formatting
-		jlbStockName.setFont(stockNameFont);
-		jlbStockAbr.setFont(stockNameFont);
-		stockInfoPanel.setBorder(new TitledBorder(borderBase, stockName+" - "+stockAbr, TitledBorder.LEFT, TitledBorder.TOP, stockNameFont));
-		jtfStockNum.setEditable(false);
-		for(int i=0; i<9; i++) {
-			blank[i] = new JLabel("                 ");
+	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb) {
+		if(stockAb != null) {
+			APIcall stockInfo = new APIcall(stockAb);
+			stockInfo.setValues();
+			stockName = stockInfo.stockFullName;
+			stockAbr = stockAb;
+			stockCurPrice = stockInfo.cPrice;
+			stockValue   = " Current Value: "+ Double.toString(stockCurPrice);
+			stockValueNum = stockCurPrice;
+			stockReturn = stockValueNum * stockNum;
+			stockOpen    = "Open: " + Double.toString(stockInfo.openPrice);
+			stockHigh    = "High: " + Double.toString(stockInfo.highPrice);
+			stockLow     = "Low: " + Double.toString(stockInfo.lowPrice);
+			stockClose   = "Close: " + Double.toString(stockInfo.closePrice);
+			stockPerc    = stockInfo.percent + "%";
+			
+			jlbStockName = new JLabel(stockName);
+			jlbStockAbr  = new JLabel(" - "+stockAbr);
+			jlbValue  = new JLabel(stockValue);
+			jlbReturn = new JLabel("Stock Return: $"+Double.toString(stockReturn));
+			jlbOpen   = new JLabel(stockOpen);
+			jlbHigh   = new JLabel(stockHigh);
+			jlbLow    = new JLabel(stockLow);
+			jlbClose  = new JLabel(stockClose);
+			jlbPerc   = new JLabel(stockPerc);
+			jlbTimePrompt = new JLabel(timePrompt);
+			
+			cl = clin;
+			cardPanel = cardPanelin;
+			
+			//Panel Formatting
+			setLayout(new BorderLayout());
+			stockInfoPanel.setLayout(new GridLayout(3,5));
+			shellChartPanel.setLayout(new BorderLayout());
+			buttonPanel.setLayout(new GridLayout(1,2));
+			shellChartPanel.setBackground(Color.WHITE);
+			
+			//Component formatting
+			jlbStockName.setFont(stockNameFont);
+			jlbStockAbr.setFont(stockNameFont);
+			stockInfoPanel.setBorder(new TitledBorder(borderBase, stockName+" - "+stockAbr, TitledBorder.LEFT, TitledBorder.TOP, stockNameFont));
+			jtfStockNum.setEditable(false);
+			for(int i=0; i<9; i++) {
+				blank[i] = new JLabel("                 ");
+			}
+			
+			//Adding components to panels and panels to InfoScreen
+			stockInfoPanel.add(jlbValue);
+			stockInfoPanel.add(blank[0]);stockInfoPanel.add(blank[1]);stockInfoPanel.add(blank[2]);
+			stockInfoPanel.add(jlbReturn);
+			stockInfoPanel.add(blank[3]);
+			stockInfoPanel.add(jlbOpen);
+			stockInfoPanel.add(jlbHigh);
+			stockInfoPanel.add(jlbLow);
+			stockInfoPanel.add(jlbClose);
+			stockInfoPanel.add(stockNumPanel);
+			stockNumPanel.add(jbStockDown);
+			jbStockDown.addActionListener(this);
+			stockNumPanel.add(jtfStockNum);
+			stockNumPanel.add(jbStockUp);
+			jbStockUp.addActionListener(this);
+			stockInfoPanel.add(blank[4]);stockInfoPanel.add(blank[5]);stockInfoPanel.add(blank[6]);
+			stockInfoPanel.add(stockStatusPanel);
+			stockStatusPanel.add(jlbPerc);
+			/*
+				if(stockValue > prevStockValue)
+					stockStatusPanel.add(jlbGreenArrow);
+				else
+					stockStatusPanel.add(jlbRedArrrow);
+			*/
+			
+			shellChartPanel.add(timeDropPanel, BorderLayout.NORTH);
+			jcbxTimePeriod.setAlignmentX(Component.CENTER_ALIGNMENT);
+			timeDropPanel.add(jlbTimePrompt);
+			timeDropPanel.add(jcbxTimePeriod);
+			jcbxTimePeriod.addItemListener(this);
+			shellChartPanel.add(createContent(), BorderLayout.CENTER);
+			
+			buttonPanel.add(jbBack);
+			jbBack.addActionListener(this);
+			buttonPanel.add(jbDelete);
+			jbDelete.addActionListener(this);
+			
+			add(stockInfoPanel, BorderLayout.NORTH);
+			add(shellChartPanel, BorderLayout.CENTER);
+			add(buttonPanel, BorderLayout.SOUTH);
 		}
-		
-		//Adding components to panels and panels to InfoScreen
-		stockInfoPanel.add(jlbValue);
-		stockInfoPanel.add(blank[0]);stockInfoPanel.add(blank[1]);stockInfoPanel.add(blank[2]);
-		stockInfoPanel.add(jlbReturn);
-		stockInfoPanel.add(blank[3]);
-		stockInfoPanel.add(jlbOpen);
-		stockInfoPanel.add(jlbHigh);
-		stockInfoPanel.add(jlbLow);
-		stockInfoPanel.add(jlbClose);
-		stockInfoPanel.add(stockNumPanel);
-		stockNumPanel.add(jbStockDown);
-		jbStockDown.addActionListener(this);
-		stockNumPanel.add(jtfStockNum);
-		stockNumPanel.add(jbStockUp);
-		jbStockUp.addActionListener(this);
-		stockInfoPanel.add(blank[4]);stockInfoPanel.add(blank[5]);stockInfoPanel.add(blank[6]);
-		stockInfoPanel.add(stockStatusPanel);
-		stockStatusPanel.add(jlbPerc);
-		/*
-			if(stockValue > prevStockValue)
-				stockStatusPanel.add(jlbGreenArrow);
-			else
-				stockStatusPanel.add(jlbRedArrrow);
-		*/
-		
-		shellChartPanel.add(timeDropPanel, BorderLayout.NORTH);
-		jcbxTimePeriod.setAlignmentX(Component.CENTER_ALIGNMENT);
-		timeDropPanel.add(jlbTimePrompt);
-		timeDropPanel.add(jcbxTimePeriod);
-		jcbxTimePeriod.addItemListener(this);
-		shellChartPanel.add(createContent(), BorderLayout.CENTER);
-		
-		buttonPanel.add(jbBack);
-		jbBack.addActionListener(this);
-		buttonPanel.add(jbDelete);
-		jbDelete.addActionListener(this);
-		
-		add(stockInfoPanel, BorderLayout.NORTH);
-		add(shellChartPanel, BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
 	
@@ -181,7 +212,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	        if (timePeriod == "Day") {
 	    			dateFormat= "HH:mm";
 	        }
-		    else if(timePeriod == "Week") {
+		    else if(timePeriod == "Year to Date") {
 		    		dateFormat = "MM-dd-YY";
 		    }
 		    else if(timePeriod == "Month") {
@@ -205,40 +236,75 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	    APIcall data = new APIcall();
 	    int key;
 	   	SimpleDateFormat s2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    if (timeP == "Day") {
+	    if (timeP == "Day" && seriesD.isEmpty()) {
 	    		key = 0;
 	    		s1 = new SimpleDateFormat("HH:mm");
 	    }
-	    else if(timeP == "Week") {
+	    else if(timeP == "Month" && seriesM.isEmpty()) {
 	    		key = 1;
 	    		s1 = new SimpleDateFormat("MM-dd-YY");
 	    }
-	    else if(timeP == "Month") {
+	    else if(timeP == "Year" && seriesY.isEmpty()) {
 	    		key = 2;
 	    		s1 = new SimpleDateFormat("MMM dd");
 	    		s2 = new SimpleDateFormat("yyyy-MM-dd");
 	    }
-	    else if(timeP == "Year") {
+	    else if(timeP == "5 Years" && series5Y.isEmpty()) {
 	    		key = 3;
 	    		s1 = new SimpleDateFormat("MMM YYY");
 	    }
-	    else if(timeP == "5 Years") {
+	    else if(timeP == "Year to Date" && seriesYTD.isEmpty()) {
 	    		key = 4;
 	    		s1 = new SimpleDateFormat("MMM YYY");
 	    }
 	    else {
-	    		key = 0;
+	    		key = -1;
 	    }
-	    SortedMap<Date, Double> hist = data.history(stockName, key);
-	    ArrayList<Date> dates = new ArrayList<Date>();
-	    ArrayList<Double> vals = new ArrayList<Double>();
-	    for(Iterator iterator = hist.keySet().iterator(); iterator.hasNext();) {
-	    		Date iat = (Date)iterator.next();
-	    		dates.add(iat);
-	    		vals.add(hist.get(iat));
-		}
-	    for (int x = 0; x < dates.size(); x++) {
-	        series1.add(new Minute(dates.get(x)), vals.get(x));
+	    if(key != -1) {
+		    SortedMap<Date, Double> hist = data.history(key);
+		    ArrayList<Date> dates = new ArrayList<Date>();
+		    ArrayList<Double> vals = new ArrayList<Double>();
+		    for(Iterator iterator = hist.keySet().iterator(); iterator.hasNext();) {
+		    		Date iat = (Date)iterator.next();
+		    		dates.add(iat);
+		    		vals.add(hist.get(iat));
+			}
+		    System.out.println(dates.size());
+		    for (int x = 0; x < dates.size(); x++) {
+		        series1.add(new Minute(dates.get(x)), vals.get(x));
+		    }
+		    if (timeP == "Day") {
+	    			seriesD = series1;
+		    }
+		    else if(timeP == "Year to Date") {
+		    		seriesYTD = series1;
+		    }
+		    else if(timeP == "Month") {
+		    		seriesM = series1;
+		    }
+		    else if(timeP == "Year") {
+		    		seriesY = series1;
+		    }
+		    else if(timeP == "5 Years") {
+		    		series5Y = series1;
+		    }
+	    }
+	    else {
+		    	if (timeP == "Day") {
+	    			series1 = seriesD;
+		    }
+		    else if(timeP == "Year to Date") {
+		    		series1 = seriesYTD;
+		    }
+		    else if(timeP == "Month") {
+		    		series1 = seriesM;
+		    }
+		    else if(timeP == "Year") {
+		    		series1 = seriesY;
+		    }
+		    else if(timeP == "5 Years") {
+		    		series1 = series5Y;
+		    }
 	    }
 	    TimeSeriesCollection dataset = new TimeSeriesCollection();
 	    dataset.addSeries(series1);
@@ -335,8 +401,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	    	if(e.getSource()==jcbxTimePeriod) {
 	    		if(jcbxTimePeriod.getSelectedItem().equals("Day"))
 	    			timePeriod = "Day";
-	    		else if (jcbxTimePeriod.getSelectedItem().equals("Week"))
-	    			timePeriod = "Week";
+	    		else if (jcbxTimePeriod.getSelectedItem().equals("Year to Date"))
+	    			timePeriod = "Year to Date";
 	    		else if (jcbxTimePeriod.getSelectedItem().equals("Month"))
 	    			timePeriod = "Month";
 	    		else if (jcbxTimePeriod.getSelectedItem().equals("Year"))
