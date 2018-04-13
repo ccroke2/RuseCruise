@@ -106,11 +106,13 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	
 	public SimpleDateFormat s1 = new SimpleDateFormat("MM-dd-yyyy");
 	
+	public APIcall stockInfo; 
+	
 	//I need this to work too.
 	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb) {
 		if(stockAb != null) {
-			APIcall stockInfo = new APIcall(stockAb);
+			stockInfo= new APIcall(stockAb);
 			stockInfo.setValues();
 			stockName = stockInfo.stockFullName;
 			stockAbr = stockAb;
@@ -233,7 +235,6 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	//Collects data and creates data set: Will have to be revised with API/Db
 	private XYDataset createDataset(String stockName, String timeP) {
 		TimeSeries series1 = new TimeSeries("Value");
-	    APIcall data = new APIcall();
 	    int key;
 	   	SimpleDateFormat s2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    if (timeP == "Day" && seriesD.isEmpty()) {
@@ -261,7 +262,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	    		key = -1;
 	    }
 	    if(key != -1) {
-		    SortedMap<Date, Double> hist = data.history(key);
+		    SortedMap<Date, Double> hist = stockInfo.history(key);
 		    ArrayList<Date> dates = new ArrayList<Date>();
 		    ArrayList<Double> vals = new ArrayList<Double>();
 		    for(Iterator iterator = hist.keySet().iterator(); iterator.hasNext();) {

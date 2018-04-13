@@ -108,7 +108,8 @@ public class APIcall {
 			openPrice = (Double.parseDouble(get));
 			get = (jobj.get("close")).toString();
 			closePrice = (Double.parseDouble(get));
-			cPrice = ((Double)jobj.get("latestPrice"));
+			get = (jobj.get("latestPrice")).toString();
+			cPrice = (Double.parseDouble(get));
 			stockFullName = (String)jobj.get("companyName");
 			double lastClose = (Double)jobj.get("previousClose");
 			percent = (cPrice-lastClose)/lastClose * 100;
@@ -120,23 +121,23 @@ public class APIcall {
 			SimpleDateFormat from = new SimpleDateFormat("yyyyMMdd-HH:mm");
 			try {
 				if (keyLen == 0) {
-					url_string = "https://api.iextrading.com/1.0/stock/aapl/chart/1d";
+					url_string = "https://api.iextrading.com/1.0/stock/"+ stockName +"/chart/1d";
 					from = new SimpleDateFormat("yyyyMMdd-HH:mm");
 				}
 				else if (keyLen == 1) {
-					url_string = "https://api.iextrading.com/1.0/stock/aapl/chart/1m";
+					url_string = "https://api.iextrading.com/1.0/stock/"+stockName+"/chart/1m";
 					from = new SimpleDateFormat("yyyy-MM-dd");
 				}
 				else if (keyLen == 2) {
-					url_string = "https://api.iextrading.com/1.0/stock/aapl/chart/1y";
+					url_string = "https://api.iextrading.com/1.0/stock/"+stockName+"/chart/1y";
 					from = new SimpleDateFormat("yyyy-MM-dd");
 				}
 				else if (keyLen == 3) {
-					url_string = "https://api.iextrading.com/1.0/stock/aapl/chart/5y";
+					url_string = "https://api.iextrading.com/1.0/stock/"+stockName+"/chart/5y";
 					from = new SimpleDateFormat("yyyy-MM-dd");
 				}
 				else if (keyLen ==  4) {
-					url_string = "https://api.iextrading.com/1.0/stock/aapl/chart/ytd";
+					url_string = "https://api.iextrading.com/1.0/stock/"+stockName+"/chart/ytd";
 					from = new SimpleDateFormat("yyyy-MM-dd");
 				}
 				else {
@@ -188,8 +189,9 @@ public class APIcall {
 					}
 					String get1 = (tempO.get("high")).toString();
 					val = Double.parseDouble(get1);
-					hist.put(d,val);
-					
+					if (val >= 0) {
+						hist.put(d,val);
+					}
 				}
 				return hist;
 				} catch (MalformedURLException e) {
