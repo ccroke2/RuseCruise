@@ -11,7 +11,7 @@ import javax.swing.border.LineBorder;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-public class StockPanel{
+public class StockPanel implements ActionListener{
 	
 	public String stockAb;
 	
@@ -27,7 +27,13 @@ public class StockPanel{
 
 	private APIcall sCall;
 	
-	public StockPanel(String sA) {
+	CardLayout cl;
+	JPanel cardPanel;
+	
+	public StockPanel(CardLayout clin, JPanel cardPanelin, String sA) {
+		cl = clin;
+		cardPanel = cardPanelin;
+		
 		stockAb = sA;
 		sCall = new APIcall(sA);
 		sCall.setValues();
@@ -61,6 +67,7 @@ public class StockPanel{
 		}
 		pnl.add(cLbl);
 		pnl.add(btn);
+		btn.addActionListener(this);
 		pnl.setBorder(new LineBorder(Color.BLACK, 2));
 		
 		return pnl;
@@ -74,6 +81,17 @@ public class StockPanel{
 		else {
 			System.err.println("Couldn't find file: " + path);
 			return null;
+		}
+	}
+	
+	public void actionPerformed (ActionEvent e) {
+		if(e.getSource()==btn) {
+			String xName = stockAb;
+			cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
+			cl.show(cardPanel, xName);
+			//cl.next(cardPanel);
+			//ld.readData();
+			//ld.createFrame();
 		}
 	}
 }

@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Collections;
 import java.lang.Long;
+import java.lang.Object;
+import java.util.Vector;
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -52,10 +55,46 @@ public class APIcall {
 		//1YNDRU4N407ZIW76
 		
 		private Connection conn = null;
+		Vector<String> sFullAbr = new Vector<String>();
 		
 		//Constructor
 		public APIcall() {
+			url_string = "https://api.iextrading.com/1.0/ref-data/symbols";
 			
+			try {
+				String inline =  "";
+				URL url = new URL (url_string);
+				HttpURLConnection conn = (HttpURLConnection)url.openConnection(); 
+				conn.setRequestMethod("GET");
+				conn.connect();
+				Scanner sc = new Scanner(url.openStream());
+				while(sc.hasNext()){
+					inline+=sc.nextLine();
+				}
+				
+				
+				sc.close();
+				JSONParser parse = new JSONParser();
+				JSONArray jobj = (JSONArray)parse.parse(inline); 
+				
+				JSONObject x;
+				String ab;
+				String nm;
+				for (Object o : jobj) {
+					x = (JSONObject)o;
+					sFullAbr.add((String)x.get("symbol"));
+				}
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 		}
 		
 		public APIcall(String stockAb) {
@@ -111,7 +150,8 @@ public class APIcall {
 			get = (jobj.get("latestPrice")).toString();
 			cPrice = (Double.parseDouble(get));
 			stockFullName = (String)jobj.get("companyName");
-			double lastClose = (Double)jobj.get("previousClose");
+			get = (jobj.get("previousClose")).toString();
+			double lastClose = (Double.parseDouble(get));
 			percent = (cPrice-lastClose)/lastClose * 100;
 		}
 

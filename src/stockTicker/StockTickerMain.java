@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 
 public class StockTickerMain extends JFrame {
 
-	static Dimension frameSize = new Dimension(450,600);
+	static Dimension frameSize = new Dimension(950,600);
 	
 	SplashScreen splScreen;
 	LoginScreen2 logScreen;
@@ -36,7 +36,7 @@ public class StockTickerMain extends JFrame {
 		splScreen = new SplashScreen(cl, cardPanel);
 		logScreen = new LoginScreen2(cl, cardPanel);
 		mainScreen = new HomeScreen(cl, cardPanel);
-		infoScreen = new InfoScreen(cl, cardPanel, "GOOGL");
+		//infoScreen = new InfoScreen(cl, cardPanel, "GOOGL");
 		
 		//add(new LoginScreen2());
 		//ImageIcon icon = new ImageIcon (getClass().getResource("/iconRC.png"));
@@ -46,7 +46,7 @@ public class StockTickerMain extends JFrame {
 		cardPanel.add(splScreen, "splash");
 		cardPanel.add(logScreen, "login");
 		cardPanel.add(mainScreen, "home");
-		cardPanel.add(infoScreen, "info");
+		//cardPanel.add(infoScreen, "info");
 		cl.show(cardPanel, "login");
 		
 	}
@@ -57,57 +57,13 @@ public class StockTickerMain extends JFrame {
 	            StockTickerMain t = new StockTickerMain();
 	            t.setLocation(400, 180);
 	            t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            t.pack();
 	            t.setSize(frameSize);
 	            t.setResizable(true);
-	            t.pack();
 	            t.setVisible(true);
 	             }
 	        });
 		
 	    }
-		
-		/*
-		//One day of history
-		APIcall daily = new APIcall();
-		SortedMap<Date, Double> xList = new TreeMap<Date, Double>(Collections.reverseOrder());
-		xList = daily.history("SPOT", 4);
-		System.out.println(xList);
-		
-		// This gets today's date
-		TimeZone timeZone = TimeZone.getTimeZone("US/Eastern");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		dateFormat.setTimeZone(timeZone);
-		Date date = new Date();
-		String d = (String)dateFormat.format(date);
-		
-		
-		// Single Stock info example (With printing final vector)
-		// s becomes a vector 
-		ArrayList<String> s = new ArrayList<String>();
-		s = daily.returnAPI_single("GOOGL", d);
-		System.out.println(s);
-		 
-		System.out.println();
-		
-		//Percentage
-		double perc = daily.stockPercent("AAPL");
-		System.out.println(perc);
-		
-		System.out.println();
-		
-		// Batch stock info example (With printing final vector)
-		// kList holds stock symbols that are wanted
-		// k hold the current value of each stock, in the same order as kList
-		ArrayList<String> kList = new ArrayList<String>();
-		kList.add("GOOGL");
-		kList.add("BAC");
-		kList.add("F");
-		kList.add("GE");
-		ArrayList<String> k = new ArrayList<String>();
-
-		k = daily.returnAPI_batch(kList);
-		System.out.println(k);
-
-		*/
 
 }

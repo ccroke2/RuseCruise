@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 //import stockTicker.HomeScreen2.Research;
 
@@ -25,6 +26,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 	private JPanel search = new JPanel();
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
+	private JComboBox combo;
 	LoadDriver ld = new LoadDriver();
 	
 	CardLayout cl;
@@ -41,15 +43,16 @@ public class HomeScreen extends JPanel implements ActionListener {
 		tempPanel.setLayout(new GridLayout(1,2));
 		
 		//
-		tempPanel.add(jbInfo);
-		jbInfo.addActionListener(this);
 		tempPanel.add(jbButt);
 		jbButt.addActionListener(this);
 		
-		JTextField Ctf = new JTextField(30);
 		
-		search.add(jlbText);
-		search.add(Ctf);
+		APIcall getList = new APIcall();
+		combo = new JComboBox(getList.sFullAbr);
+		combo.setEditable(true);
+		AutoCompleteDecorator.decorate(combo);
+		
+		search.add(combo);
 		search.add(jbSearch);
 		jbSearch.addActionListener(this);
 		
@@ -74,6 +77,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 		       String stock = inputLine.substring(0, inputLine.indexOf("\t"));
 		       stockNamesPnl.add(new JLabel(stock));
 		       APIcall sCall = new APIcall(stock);
+		       sCall.setValues();
 		       stockNamesPnl.add(new JLabel(sCall.stockFullName));
 		       stocks.add(sCall);
 		       sAbs.add(stock);
@@ -81,7 +85,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 			}
 			APIcall x = new APIcall();
 			for (int i = 0; i < stocks.size(); i++) {
-				StockPanel spnl = new StockPanel(stocks.get(i).stockName);
+				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i).stockName);
 			    allStocks.add(spnl.getStockPanel(pnlList.get(i)));
 			}
 			
@@ -96,6 +100,7 @@ public class HomeScreen extends JPanel implements ActionListener {
 		add(scrollPane, BorderLayout.CENTER);
 		jlbText.setHorizontalAlignment(JLabel.CENTER);
 		add(search, BorderLayout.NORTH);
+
 		//add(pan);
 		
 		/*
@@ -118,8 +123,12 @@ public class HomeScreen extends JPanel implements ActionListener {
 				cl.next(cardPanel);
 			}
 			if(e.getSource()==jbSearch) {
-				ld.readData();
-				ld.createFrame();
+				String xName = (String)combo.getSelectedItem();
+				cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
+				cl.show(cardPanel, xName);
+				//cl.next(cardPanel);
+				//ld.readData();
+				//ld.createFrame();
 			}
 		}
 			

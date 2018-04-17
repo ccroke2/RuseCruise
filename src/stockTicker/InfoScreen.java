@@ -196,6 +196,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			add(stockInfoPanel, BorderLayout.NORTH);
 			add(shellChartPanel, BorderLayout.CENTER);
 			add(buttonPanel, BorderLayout.SOUTH);
+
 		}
 	}
 	
@@ -350,7 +351,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
     @Override
     public void actionPerformed (ActionEvent e) {
             if(e.getSource()==jbBack) {
-                    cl.previous(cardPanel);
+            			cl.previous(cardPanel);
+            			cardPanel.remove(3);
                     System.out.println("back button working");
             }
             if(e.getSource()==jbDelete) {
