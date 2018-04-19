@@ -20,11 +20,11 @@ import java.text.SimpleDateFormat;
 
 public class StockTickerMain extends JFrame {
 
-	static Dimension frameSize = new Dimension(950,600);
+	static Dimension frameSize = new Dimension(1000,600);
 	
 	SplashScreen splScreen;
 	LoginScreen2 logScreen;
-	HomeScreen mainScreen;
+	//HomeScreen mainScreen;
 	InfoScreen infoScreen;
 	CardLayout cl = new CardLayout();
 	JPanel cardPanel = new JPanel();
@@ -33,9 +33,9 @@ public class StockTickerMain extends JFrame {
 		setTitle("Stock Ticker");
 		add(cardPanel);
 		
-		splScreen = new SplashScreen(cl, cardPanel);
+		//splScreen = new SplashScreen(cl, cardPanel);
 		logScreen = new LoginScreen2(cl, cardPanel);
-		mainScreen = new HomeScreen(cl, cardPanel);
+		//mainScreen = new HomeScreen(cl, cardPanel);
 		//infoScreen = new InfoScreen(cl, cardPanel, "GOOGL");
 		
 		//add(new LoginScreen2());
@@ -43,9 +43,9 @@ public class StockTickerMain extends JFrame {
 		//setIconImage(icon.getImage());\\
 
 		cardPanel.setLayout(cl);
-		cardPanel.add(splScreen, "splash");
 		cardPanel.add(logScreen, "login");
-		cardPanel.add(mainScreen, "home");
+		//cardPanel.add(splScreen, "splash");
+		//cardPanel.add(mainScreen, "home");
 		//cardPanel.add(infoScreen, "info");
 		cl.show(cardPanel, "login");
 		

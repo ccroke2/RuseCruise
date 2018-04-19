@@ -1,6 +1,5 @@
 AAPL	Apple Inc.
 AMZN	Amazon.com, Inc.
-BUD	Anheuser-Busch (Budweiser)
 CAKE	The Cheesecake Factory Incorporated
 CBRL	 Cracker Barrel Old Country Store, Inc.
 CROX	Crocs, Inc.

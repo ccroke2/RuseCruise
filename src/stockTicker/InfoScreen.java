@@ -174,6 +174,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			stockInfoPanel.add(blank[4]);stockInfoPanel.add(blank[5]);stockInfoPanel.add(blank[6]);
 			stockInfoPanel.add(stockStatusPanel);
 			stockStatusPanel.add(jlbPerc);
+			
 			/*
 				if(stockValue > prevStockValue)
 					stockStatusPanel.add(jlbGreenArrow);
@@ -196,7 +197,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			add(stockInfoPanel, BorderLayout.NORTH);
 			add(shellChartPanel, BorderLayout.CENTER);
 			add(buttonPanel, BorderLayout.SOUTH);
-
+			
 		}
 	}
 	
@@ -271,7 +272,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 		    		dates.add(iat);
 		    		vals.add(hist.get(iat));
 			}
-		    System.out.println(dates.size());
+		    
 		    for (int x = 0; x < dates.size(); x++) {
 		        series1.add(new Minute(dates.get(x)), vals.get(x));
 		    }
@@ -352,7 +353,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
     public void actionPerformed (ActionEvent e) {
             if(e.getSource()==jbBack) {
             			cl.previous(cardPanel);
-            			cardPanel.remove(3);
+            			cardPanel.remove(4);
                     System.out.println("back button working");
             }
             if(e.getSource()==jbDelete) {
@@ -362,6 +363,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
                                     JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if(deleteStock==JOptionPane.YES_OPTION) {
                     		cl.previous(cardPanel);
+                    		cardPanel.remove(4);
                             System.out.println("This will do soemthing later");
                     }
             }

@@ -49,16 +49,21 @@ public class APIcall {
 		public ArrayList<String> sNames = new ArrayList<String>();
 		public String url_string;
 		public String resultJ;
-		static String API_KEY = "1YNDRU4N407ZIW76";
-		//first key: UUX1LQNOWRPP64V9
-		//second key: T0NRDPDDH2Q1LDAA
-		//1YNDRU4N407ZIW76
 		
 		private Connection conn = null;
 		Vector<String> sFullAbr = new Vector<String>();
+		Vector<String> sFull = new Vector<String>();
 		
 		//Constructor
 		public APIcall() {
+
+		}
+		
+		public APIcall(String stockAb) {
+			stockName = stockAb;
+		}
+		
+		public void getAllNames() {
 			url_string = "https://api.iextrading.com/1.0/ref-data/symbols";
 			
 			try {
@@ -83,6 +88,8 @@ public class APIcall {
 				for (Object o : jobj) {
 					x = (JSONObject)o;
 					sFullAbr.add((String)x.get("symbol"));
+					sFull.add((String)x.get("name"));
+					
 				}
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
@@ -94,11 +101,6 @@ public class APIcall {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-		}
-		
-		public APIcall(String stockAb) {
-			stockName = stockAb;
 		}
 		
 		//JSON parse function
@@ -256,4 +258,50 @@ public class APIcall {
 			}
 			return null;
 		}
+		
+		public ArrayList<APIcall> batchValues(ArrayList<String> abs){
+			url_string = "https://api.iextrading.com/1.0/stock/market/batch?symbols=";
+			for (int i = 0; i < abs.size(); i++) {
+				url_string = url_string + abs.get(i);
+				if(i != abs.size() -1) {
+					url_string = url_string + ",";
+				}
+			}
+			url_string = url_string + "&types=quote&range=1m&last=1";
+					
+			JSONObject jobj = JSONparse(url_string);
+			ArrayList<APIcall> values = new ArrayList<APIcall>();
+			
+			JSONObject get;
+			String get2;
+			JSONObject tempjob;
+			
+			for (int j = 0; j < abs.size(); j++) {
+				
+				APIcall temp = new APIcall();
+				get = (JSONObject)(jobj.get(abs.get(j)));
+				tempjob = (JSONObject)get.get("quote");
+				
+				temp.stockName = abs.get(j);
+				get2 = (tempjob.get("high")).toString();
+				temp.highPrice = Double.parseDouble(get2);
+				get2 = (tempjob.get("low")).toString();
+				temp.lowPrice = (Double.parseDouble(get2));
+				get2 = (tempjob.get("open")).toString();
+				temp.openPrice = (Double.parseDouble(get2));
+				get2 = (tempjob.get("close")).toString();
+				temp.closePrice = (Double.parseDouble(get2));
+				get2 = (tempjob.get("latestPrice")).toString();
+				temp.cPrice = (Double.parseDouble(get2));
+				temp.stockFullName = (String)tempjob.get("companyName");
+				get2 = (tempjob.get("previousClose")).toString();
+				double lastClose = (Double.parseDouble(get2));
+				temp.percent = (temp.cPrice-lastClose)/lastClose * 100;
+				
+				values.add(temp);
+			}
+			
+			return values;
+		}
+		
 }

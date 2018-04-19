@@ -30,13 +30,12 @@ public class StockPanel implements ActionListener{
 	CardLayout cl;
 	JPanel cardPanel;
 	
-	public StockPanel(CardLayout clin, JPanel cardPanelin, String sA) {
+	public StockPanel(CardLayout clin, JPanel cardPanelin, APIcall sCallin) {
 		cl = clin;
 		cardPanel = cardPanelin;
 		
-		stockAb = sA;
-		sCall = new APIcall(sA);
-		sCall.setValues();
+		sCall = sCallin;
+		stockAb = sCall.stockName;
 	}
 	
 	public JPanel getStockPanel(JPanel snPnl) {
@@ -86,6 +85,7 @@ public class StockPanel implements ActionListener{
 	
 	public void actionPerformed (ActionEvent e) {
 		if(e.getSource()==btn) {
+			System.out.println("clicked");
 			String xName = stockAb;
 			cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
 			cl.show(cardPanel, xName);

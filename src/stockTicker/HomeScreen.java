@@ -27,7 +27,11 @@ public class HomeScreen extends JPanel implements ActionListener {
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
 	private JComboBox combo;
+	private JButton refresh = new JButton("refresh");
+	private Vector<String> all_ab_full = new Vector<String>();
+	private int firstFull_indx;
 	LoadDriver ld = new LoadDriver();
+	private APIcall getList = new APIcall();
 	
 	CardLayout cl;
 	JPanel cardPanel;
@@ -47,14 +51,23 @@ public class HomeScreen extends JPanel implements ActionListener {
 		jbButt.addActionListener(this);
 		
 		
-		APIcall getList = new APIcall();
-		combo = new JComboBox(getList.sFullAbr);
+		getList.getAllNames();
+		all_ab_full.addAll(getList.sFullAbr);
+		all_ab_full.addAll(getList.sFull);
+		System.out.println(getList.sFull);
+		firstFull_indx = getList.sFullAbr.size();
+		combo = new JComboBox(all_ab_full);
 		combo.setEditable(true);
+		Dimension d = new Dimension(100,20);
+		combo.setPreferredSize(d);
 		AutoCompleteDecorator.decorate(combo);
 		
 		search.add(combo);
 		search.add(jbSearch);
+		search.add(refresh);
+		refresh.addActionListener(this);
 		jbSearch.addActionListener(this);
+		
 		
 		
 		scrollPane.setPreferredSize(new Dimension (500, 300));
@@ -71,22 +84,21 @@ public class HomeScreen extends JPanel implements ActionListener {
 		    ArrayList<APIcall> stocks = new ArrayList<APIcall>();
 		    ArrayList<String> sAbs = new ArrayList<String>();
 		    ArrayList<JPanel> pnlList = new ArrayList<JPanel>();
+		    APIcall tempCall = new APIcall();
 			while ((inputLine = in.readLine()) != null) {
-				JPanel stockNamesPnl = new JPanel();
-				stockNamesPnl.setLayout(new FlowLayout());
 		       String stock = inputLine.substring(0, inputLine.indexOf("\t"));
-		       stockNamesPnl.add(new JLabel(stock));
-		       APIcall sCall = new APIcall(stock);
-		       sCall.setValues();
-		       stockNamesPnl.add(new JLabel(sCall.stockFullName));
-		       stocks.add(sCall);
 		       sAbs.add(stock);
-		       pnlList.add(stockNamesPnl);
 			}
 			APIcall x = new APIcall();
+			System.out.println("HERE is BATCH");
+			stocks = x.batchValues(sAbs);
 			for (int i = 0; i < stocks.size(); i++) {
-				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i).stockName);
-			    allStocks.add(spnl.getStockPanel(pnlList.get(i)));
+				JPanel stockNamesPnl = new JPanel();
+				stockNamesPnl.setLayout(new FlowLayout());
+				stockNamesPnl.add(new JLabel(sAbs.get(i)));
+				stockNamesPnl.add(new JLabel(stocks.get(i).stockFullName));
+				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i));
+			    allStocks.add(spnl.getStockPanel(stockNamesPnl));
 			}
 			
 		    in.close();
@@ -116,14 +128,29 @@ public class HomeScreen extends JPanel implements ActionListener {
 	//ActionListener for Info, Search and Exit buttons, creates DialogBoxes
 		@Override
 		public void actionPerformed (ActionEvent e) {
-			if(e.getSource()==jbButt) {
+			if(e.getSource() == refresh) {
 				cl.previous(cardPanel);
+				cl.previous(cardPanel);
+				cardPanel.remove(3);
+				cardPanel.remove(2);
+				SplashScreen temp = new SplashScreen(cl, cardPanel, 1);
+				cardPanel.add(temp, "splash");
+				cl.next(cardPanel);
+			}
+			if(e.getSource()==jbButt) {
+				cl.first(cardPanel);
 			}
 			if(e.getSource()==jbInfo) {
 				cl.next(cardPanel);
 			}
 			if(e.getSource()==jbSearch) {
-				String xName = (String)combo.getSelectedItem();
+				String xName;
+				if(combo.getSelectedIndex() >= firstFull_indx) {
+					xName = getList.sFullAbr.get(combo.getSelectedIndex() - firstFull_indx);
+				}
+				else {
+					xName = (String)combo.getSelectedItem();
+				}
 				cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
 				cl.show(cardPanel, xName);
 				//cl.next(cardPanel);

@@ -80,7 +80,12 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 		if(e.getSource() == passwordField || e.getSource()==jbEnter) {
 			inputPassword = passwordField.getPassword();
 			if(Arrays.equals(inputPassword, masterPassword)) {
-					cl.next(cardPanel);
+					SplashScreen splScreen = new SplashScreen(cl, cardPanel, 1);
+					SplashScreen temp = new SplashScreen(cl, cardPanel, 0);
+					cardPanel.add(temp, "tempSplash");
+					cardPanel.add(splScreen, "splash");
+					cl.show(cardPanel,"splash");
+					//cl.next(cardPanel);
 			} else {
 				JOptionPane.showMessageDialog(null,
 						"That password is incorrect. Please try again.",
