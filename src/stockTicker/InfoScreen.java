@@ -28,6 +28,8 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.axis.DateAxis;
 
 import java.text.SimpleDateFormat;
+import javax.swing.ImageIcon;
+import java.net.URL;
 
 //ChartMouseListener
 public class InfoScreen extends JPanel implements ActionListener, ChartMouseListener, ItemListener{
@@ -124,7 +126,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			stockHigh    = "High: " + Double.toString(stockInfo.highPrice);
 			stockLow     = "Low: " + Double.toString(stockInfo.lowPrice);
 			stockClose   = "Close: " + Double.toString(stockInfo.closePrice);
-			stockPerc    = stockInfo.percent + "%";
+			String perc = String.format("%.2f",stockInfo.percent);
+			stockPerc    = perc + "%";
 			
 			jlbStockName = new JLabel(stockName);
 			jlbStockAbr  = new JLabel(" - "+stockAbr);
@@ -158,7 +161,9 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			
 			//Adding components to panels and panels to InfoScreen
 			stockInfoPanel.add(jlbValue);
-			stockInfoPanel.add(blank[0]);stockInfoPanel.add(blank[1]);stockInfoPanel.add(blank[2]);
+			stockInfoPanel.add(blank[1]);
+			stockInfoPanel.add(blank[2]);
+			stockInfoPanel.add(blank[7]);
 			stockInfoPanel.add(jlbReturn);
 			stockInfoPanel.add(blank[3]);
 			stockInfoPanel.add(jlbOpen);
@@ -171,15 +176,31 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			stockNumPanel.add(jtfStockNum);
 			stockNumPanel.add(jbStockUp);
 			jbStockUp.addActionListener(this);
-			stockInfoPanel.add(blank[4]);stockInfoPanel.add(blank[5]);stockInfoPanel.add(blank[6]);
+			stockInfoPanel.add(blank[4]);
+			stockInfoPanel.add(blank[5]);
+			stockInfoPanel.add(blank[6]);
 			stockInfoPanel.add(stockStatusPanel);
-			stockStatusPanel.add(jlbPerc);
-			/*
-				if(stockValue > prevStockValue)
-					stockStatusPanel.add(jlbGreenArrow);
-				else
-					stockStatusPanel.add(jlbRedArrrow);
-			*/
+			if (stockInfo.percent > 0) {
+				
+				jlbPerc.setForeground(Color.GREEN);
+				stockStatusPanel.add(jlbPerc);
+				ImageIcon icon = createImageIcon("/Green_Arrow_Up_Darker.svg.png");
+				JLabel picLabel = new JLabel(icon);
+				stockStatusPanel.add(picLabel);
+				
+			}
+			if (stockInfo.percent <= 0) {
+				
+				jlbPerc.setForeground(Color.RED);
+				stockStatusPanel.add(jlbPerc);
+				ImageIcon icon = createImageIcon("/2000px-Red_Arrow_Down.svg.png");
+				JLabel picLabel = new JLabel(icon);
+				stockStatusPanel.add(picLabel);
+				
+			}
+			
+			
+			
 			
 			shellChartPanel.add(timeDropPanel, BorderLayout.NORTH);
 			jcbxTimePeriod.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -197,6 +218,17 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			add(shellChartPanel, BorderLayout.CENTER);
 			add(buttonPanel, BorderLayout.SOUTH);
 
+		}
+	}
+	
+	private ImageIcon createImageIcon(String path) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		}
+		else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
 		}
 	}
 	
