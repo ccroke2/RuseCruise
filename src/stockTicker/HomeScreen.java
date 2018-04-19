@@ -14,7 +14,6 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 	
-	private int frameSize;
 	private String[] sortTypes = {"Name","Abbreviation","Current Value","Percent Change"};
 	
 	private JScrollPane resultsPane = new JScrollPane();

@@ -23,6 +23,8 @@ public class StockPanel implements ActionListener{
 	CardLayout cl;
 	JPanel cardPanel;
 	
+	//new comment
+	
 	public StockPanel(CardLayout clin, JPanel cardPanelin, String sA) {
 		cl = clin;
 		cardPanel = cardPanelin;
