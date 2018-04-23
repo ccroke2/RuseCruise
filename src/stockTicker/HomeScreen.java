@@ -27,10 +27,9 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 	private JPanel search = new JPanel();
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
-	private JComboBox combo;
+	private JTextField txtSearch = new JTextField(20);
 	private JButton refresh = new JButton("refresh");
 	private Vector<String> all_ab_full = new Vector<String>();
-	private int firstFull_indx;
 	LoadDriver ld = new LoadDriver();
 	private APIcall getList = new APIcall();
 	private JButton jbTest = new JButton("TEST BUTTON");
@@ -74,19 +73,10 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		getList.getAllNames();
 		all_ab_full.addAll(getList.sFullAbr);
 		all_ab_full.addAll(getList.sFull);
-		firstFull_indx = getList.sFullAbr.size();
-		combo = new JComboBox(all_ab_full);
-		//creates choices for search, creates search drop-down
-		combo.setEditable(true);
-		Dimension d = new Dimension(100,20);
-		combo.setPreferredSize(d);
-		AutoCompleteDecorator.decorate(combo);
 
-		searchPanel.add(combo);
+		searchPanel.add(txtSearch);
 		searchPanel.add(jbSearch);
 		jbSearch.addActionListener(this);
-		
-		
 		
 		//scrollPane.setPreferredSize(new Dimension (500, 300));
 		//scrollPane.add(butt);
@@ -118,7 +108,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				stockNamesPnl.add(new JLabel(sAbs.get(i)));
 				stockNamesPnl.add(new JLabel(stocks.get(i).stockFullName));
 				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i));
-			    allStocks.add(spnl.getStockPanel());
+			    //allStocks.add(spnl.getStockPanel());
 			    JPanel favStockPnl = spnl.getStockPanel_info(stockNamesPnl);
 			    favStocksPanel.add(favStockPnl);
 			    pnlList.add(favStockPnl);
@@ -133,20 +123,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//favStocksPanel.setLayout(new GridLayout(0,1));
-		//~~~~~~~
-		/*
-		favStocksPanel.add(jbTest);
-		jbTest.addActionListener(this);
-		
-		for (int i=0; i<20; i++) {
-			JPanel newPanel = new JPanel();
-			JButton testButt = new JButton("Stock Name Here");
-			newPanel.add(testButt);
-			favStocksPanel.add(newPanel);
-		}*/
-		//~~~~~~~
 		
 		sortPanel.setLayout(new FlowLayout());
 		jcbxFavStockSort.setBackground(Color.WHITE);
@@ -208,9 +184,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			}
 		}
 		sortIndx = 0;
-		for (int x = 0; x < tempSort.size(); x++) {
-			System.out.println(tempSort.get(x).stockName);
-		}
 		tempSort = stocks;
 	}
 	
@@ -238,9 +211,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			}
 		}
 		sortIndx = 1;
-		for (int x = 0; x < tempSort.size(); x++) {
-			System.out.println(tempSort.get(x).stockFullName);
-		}
 		tempSort = stocks;
 	}
 	
@@ -264,9 +234,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			}
 		}
 		sortIndx = 2;
-		for (int x = 0; x < tempSort.size(); x++) {
-			System.out.println(tempSort.get(x).cPrice);
-		}
 		tempSort = stocks;
 	}
 	
@@ -290,9 +257,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			}
 		}
 		sortIndx = 3;
-		for (int x = 0; x < tempSort.size(); x++) {
-			System.out.println(tempSort.get(x).percent);
-		}
 		tempSort = stocks;
 	}
 	//ActionListener for Info, Search and Exit buttons, creates DialogBoxes
@@ -316,14 +280,21 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			}
 			if(e.getSource()==jbSearch) {
 				String xName;
-				if(combo.getSelectedIndex() >= firstFull_indx) {
-					xName = getList.sFullAbr.get(combo.getSelectedIndex() - firstFull_indx);
+				JPanel searchStocks = new JPanel();
+				searchStocks.setLayout(new GridLayout(0,1));
+				xName = txtSearch.getText().toUpperCase();
+				int indx;
+				
+				for (int i = 0; i < all_ab_full.size(); i++) {
+					indx = i%getList.sFullAbr.size();
+					
+					if(all_ab_full.get(i).toUpperCase().contains(xName)) {
+						StockPanel spnl = new StockPanel(cl, cardPanel,getList.sFullAbr.get(indx), getList.sFull.get(indx));
+						JPanel temp = spnl.getStockPanel();
+						searchStocks.add(temp);
+					}
 				}
-				else {
-					xName = (String)combo.getSelectedItem();
-				}
-				cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
-				cl.show(cardPanel, xName);
+				resultsPane.setViewportView(searchStocks);
 			}
 		}
 		@Override

@@ -25,6 +25,8 @@ public class StockPanel implements ActionListener{
  	private double perc;
  	private JLabel picLabel;
 
+ 	private String full;
+
 	private APIcall sCall;
 	
 	CardLayout cl;
@@ -38,6 +40,14 @@ public class StockPanel implements ActionListener{
 		stockAb = sCall.stockName;
 	}
 	
+	public StockPanel(CardLayout clin, JPanel cardPanelin, String abin, String fullin) {
+		cl = clin;
+		cardPanel = cardPanelin;
+		
+		stockAb = abin;
+		full = fullin;
+	}
+	
 	public JPanel getStockPanel() {
 		pnl2.setLayout(new FlowLayout());
 		pnl2.setPreferredSize(new Dimension(175, 50));
@@ -45,7 +55,7 @@ public class StockPanel implements ActionListener{
 		JPanel temp = new JPanel();
 		temp.setLayout(new GridLayout(2,1));
 		JLabel nmA = new JLabel(stockAb);
-		JLabel nmF = new JLabel(sCall.stockFullName);
+		JLabel nmF = new JLabel(full);
 		temp.add(nmA);
 		temp.add(nmF);
 		pnl2.add(temp);
