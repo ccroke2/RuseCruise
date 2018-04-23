@@ -14,7 +14,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 	
-	private String[] sortTypes = {"Name","Abbreviation","Current Value","Percent Change"};
+	private String[] sortTypes = {"Abbreviation","Name","Current Value","Percent Change"};
 	
 	private JScrollPane resultsPane = new JScrollPane();
 	private JScrollPane portPane = new JScrollPane();
@@ -49,6 +49,17 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 	private JPanel functionsPanel = new JPanel();
 	private JPanel favStocksPanel = new JPanel();
 	private JPanel rightPanel = new JPanel();
+	
+	private ArrayList<APIcall> stocks = new ArrayList<APIcall>();
+	private ArrayList<APIcall> tempSort = new ArrayList<APIcall>();
+	
+	private ArrayList<JPanel> staticSort = new ArrayList<JPanel>(); //BASE SORT
+ 	private ArrayList<JPanel> pnlList = new ArrayList<JPanel>(); //Abr sort
+	private ArrayList<JPanel> stocks_name = new ArrayList<JPanel>(); //Name sort
+	private ArrayList<JPanel> stocks_cVal = new ArrayList<JPanel>(); //current value sort
+	private ArrayList<JPanel> stocks_perc = new ArrayList<JPanel>(); //percent sort
+	
+	private int sortIndx = 0;
 	
 	CardLayout cl;
 	JPanel cardPanel;
@@ -87,23 +98,34 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		
 		    String inputLine;
 		    allStocks.setLayout(new GridLayout(0,1));
-		    ArrayList<APIcall> stocks = new ArrayList<APIcall>();
+		    favStocksPanel.setLayout(new GridLayout(0,1));
 		    ArrayList<String> sAbs = new ArrayList<String>();
-		    ArrayList<JPanel> pnlList = new ArrayList<JPanel>();
 		    APIcall tempCall = new APIcall();
-			while ((inputLine = in.readLine()) != null) {
+			if(sortIndx == 0) {
+		    while ((inputLine = in.readLine()) != null) {
 		       String stock = inputLine.substring(0, inputLine.indexOf("\t"));
 		       sAbs.add(stock);
 			}
+			}
 			APIcall x = new APIcall();
-			stocks = x.batchValues(sAbs);
+			if(sortIndx == 0) {
+				stocks = x.batchValues(sAbs);
+				tempSort = stocks;
+			}
 			for (int i = 0; i < stocks.size(); i++) {
 				JPanel stockNamesPnl = new JPanel();
-				stockNamesPnl.setLayout(new FlowLayout());
+				stockNamesPnl.setLayout(new GridLayout(2,1));
 				stockNamesPnl.add(new JLabel(sAbs.get(i)));
 				stockNamesPnl.add(new JLabel(stocks.get(i).stockFullName));
 				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i));
-			    allStocks.add(spnl.getStockPanel(stockNamesPnl));
+			    allStocks.add(spnl.getStockPanel());
+			    JPanel favStockPnl = spnl.getStockPanel_info(stockNamesPnl);
+			    favStocksPanel.add(favStockPnl);
+			    pnlList.add(favStockPnl);
+			    stocks_name.add(favStockPnl);
+			    stocks_cVal.add(favStockPnl);
+			    stocks_perc.add(favStockPnl);
+			    staticSort.add(favStockPnl);
 			}
 			
 		    in.close();
@@ -112,8 +134,9 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			e.printStackTrace();
 		}
 		
-		favStocksPanel.setLayout(new GridLayout(0,1));
+		//favStocksPanel.setLayout(new GridLayout(0,1));
 		//~~~~~~~
+		/*
 		favStocksPanel.add(jbTest);
 		jbTest.addActionListener(this);
 		
@@ -122,7 +145,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			JButton testButt = new JButton("Stock Name Here");
 			newPanel.add(testButt);
 			favStocksPanel.add(newPanel);
-		}
+		}*/
 		//~~~~~~~
 		
 		sortPanel.setLayout(new FlowLayout());
@@ -136,9 +159,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		upperPanel.setLayout(new BoxLayout(upperPanel, BoxLayout.Y_AXIS));
 		jlbGreet.setAlignmentX(Component.CENTER_ALIGNMENT);
 		upperPanel.add(jlbGreet);
-		upperPanel.add(refresh);
 		upperPanel.add(functionsPanel);
-		refresh.addActionListener(this);
 		
 		rightPanel.setLayout(new BorderLayout());
 		rightPanel.add(allStocks, BorderLayout.CENTER);
@@ -154,7 +175,9 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		holderPanel.add(resultsPane);
 		
 		buttonPanel.setLayout(new GridLayout(1,2));
+		buttonPanel.add(refresh);
 		buttonPanel.add(jbLogOut);
+		refresh.addActionListener(this);
 		jbLogOut.addActionListener(this);
 		
 		add(upperPanel, BorderLayout.NORTH);
@@ -163,6 +186,115 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 
 	}
 	
+	//////////////////// Sorting Methods \\\\\\\\\\\\\\\\\\\\
+	/////// Based on the stocks array, sort the panels \\\\\\\
+	private void abSort() {
+		JPanel temp;
+		APIcall tempAPI;
+		int j;
+		pnlList = staticSort;
+		for (int i = 1; i < stocks.size(); i++) {
+			j = i;
+			while(j > 0 && (tempSort.get(j).stockName).compareTo(tempSort.get(j-1).stockName) < 0) {
+				temp = pnlList.get(j);
+				pnlList.set(j, pnlList.get(j-1));
+				pnlList.set(j-1, temp);
+				
+				tempAPI = tempSort.get(j);
+				tempSort.set(j, tempSort.get(j-1));
+				tempSort.set(j-1, tempAPI);
+				
+				j = j-1;
+			}
+		}
+		sortIndx = 0;
+		for (int x = 0; x < tempSort.size(); x++) {
+			System.out.println(tempSort.get(x).stockName);
+		}
+		tempSort = stocks;
+	}
+	
+	private void nameSort() {
+		JPanel temp;
+		APIcall tempAPI;
+		int j;
+		stocks_name = staticSort;
+		for (int i = 1; i < stocks.size(); i++) {
+			j = i;
+			while(j > 0 && (tempSort.get(j).stockFullName.toUpperCase()).compareTo(tempSort.get(j-1).stockFullName.toUpperCase()) < 0) {
+				temp = stocks_name.get(j);
+				stocks_name.set(j, stocks_name.get(j-1));
+				stocks_name.set(j -1 , temp);
+				
+				tempAPI = tempSort.get(j);
+				tempSort.set(j, tempSort.get(j-1));
+				tempSort.set(j-1, tempAPI);
+				
+				System.out.println(tempSort.get(j).stockFullName);
+				System.out.println(tempSort.get(j-1).stockFullName);
+				System.out.println((tempSort.get(j).stockFullName).compareTo(tempSort.get(j-1).stockFullName));
+				
+				j = j-1;
+			}
+		}
+		sortIndx = 1;
+		for (int x = 0; x < tempSort.size(); x++) {
+			System.out.println(tempSort.get(x).stockFullName);
+		}
+		tempSort = stocks;
+	}
+	
+	private void currentSort() {
+		JPanel temp;
+		APIcall tempAPI;
+		int j;
+		stocks_cVal = staticSort;
+		for (int i = 1; i < stocks.size(); i++) {
+			j = i;
+			while(j > 0 && tempSort.get(j).cPrice < tempSort.get(j-1).cPrice) {
+				temp = stocks_cVal.get(j);
+				stocks_cVal.set(j, stocks_cVal.get(j-1));
+				stocks_cVal.set(j-1, temp);
+				
+				tempAPI = tempSort.get(j);
+				tempSort.set(j, tempSort.get(j-1));
+				tempSort.set(j-1, tempAPI);
+				
+				j = j-1;
+			}
+		}
+		sortIndx = 2;
+		for (int x = 0; x < tempSort.size(); x++) {
+			System.out.println(tempSort.get(x).cPrice);
+		}
+		tempSort = stocks;
+	}
+	
+	private void percSort() {
+		JPanel temp;
+		APIcall tempAPI;
+		int j;
+		stocks_perc = staticSort;
+		for (int i = 1; i < stocks.size(); i++) {
+			j = i;
+			while(j > 0 && tempSort.get(j).percent < tempSort.get(j-1).percent) {
+				temp = stocks_perc.get(j);
+				stocks_perc.set(j, stocks_perc.get(j-1));
+				stocks_perc.set(j-1, temp);
+				
+				tempAPI = tempSort.get(j);
+				tempSort.set(j, tempSort.get(j-1));
+				tempSort.set(j-1, tempAPI);
+				
+				j = j-1;
+			}
+		}
+		sortIndx = 3;
+		for (int x = 0; x < tempSort.size(); x++) {
+			System.out.println(tempSort.get(x).percent);
+		}
+		tempSort = stocks;
+	}
 	//ActionListener for Info, Search and Exit buttons, creates DialogBoxes
 		@Override
 		public void actionPerformed (ActionEvent e) {
@@ -198,18 +330,46 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		public void itemStateChanged(ItemEvent e) {
 			if(e.getStateChange()==ItemEvent.SELECTED) {
 				if(e.getSource()==jcbxFavStockSort) {
+					JPanel n = new JPanel();
+					JPanel a = new JPanel();
+					JPanel c = new JPanel();
+					JPanel p = new JPanel();
+					n.setLayout(new GridLayout(0,1));
+					a.setLayout(new GridLayout(0,1));
+					c.setLayout(new GridLayout(0,1));
+					p.setLayout(new GridLayout(0,1));
 					if(jcbxFavStockSort.getSelectedItem().equals("Name")) {
 						System.out.println("NAME SORT SELECTED");
+						nameSort();
+						for (int i = 0; i < stocks_name.size(); i++) {
+							n.add(stocks_name.get(i));
+						}
+						portPane.setViewportView(n);
 					}
 					if(jcbxFavStockSort.getSelectedItem().equals("Abbreviation")) {
 						System.out.println("ABBREVIATION SORT SELECTED");
+						abSort();
+						for (int i = 0; i < pnlList.size(); i++) {
+							a.add(pnlList.get(i));
+						}
+						portPane.setViewportView(a);
 					}
 					if(jcbxFavStockSort.getSelectedItem().equals("Current Value")) {
 						System.out.println("CURRENT VALUE SORT SELECTED");
+						currentSort();
+						for (int i = 0; i < stocks_cVal.size(); i++) {
+							c.add(stocks_cVal.get(i));
+						}
+						portPane.setViewportView(c);
 					}
 					if(jcbxFavStockSort.getSelectedItem().equals("Percent Change")) {
 						System.out.println("PERCENT CHANGE SORT SELECTED");
-					}
+						percSort();
+						for (int i = 0; i < stocks_perc.size(); i++) {
+							p.add(stocks_perc.get(i));
+						}
+						portPane.setViewportView(p);
+					}	
 				}
 			}
 		}

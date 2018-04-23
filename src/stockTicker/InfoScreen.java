@@ -382,7 +382,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
     public void actionPerformed (ActionEvent e) {
             if(e.getSource()==jbBack) {
             			cl.previous(cardPanel);
-            			cardPanel.remove(4);
+            			cardPanel.remove(cardPanel.getComponentCount() -1);
                     System.out.println("back button working");
             }
             if(e.getSource()==jbDelete) {
@@ -393,7 +393,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
                     if(deleteStock==JOptionPane.YES_OPTION) {
                     		cl.previous(cardPanel);
                     		cardPanel.remove(4);
-                            System.out.println("This will do soemthing later");
+                            System.out.println("This will do something later");
                     }
             }
             if(e.getSource()==jbStockUp) {

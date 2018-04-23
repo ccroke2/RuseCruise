@@ -33,20 +33,11 @@ public class StockTickerMain extends JFrame {
 		setTitle("Stock Ticker");
 		add(cardPanel);
 		
-		//splScreen = new SplashScreen(cl, cardPanel);
 		logScreen = new LoginScreen2(cl, cardPanel);
-		//mainScreen = new HomeScreen(cl, cardPanel);
-		//infoScreen = new InfoScreen(cl, cardPanel, "GOOGL");
-		
-		//add(new LoginScreen2());
-		//ImageIcon icon = new ImageIcon (getClass().getResource("/iconRC.png"));
-		//setIconImage(icon.getImage());\\
 
 		cardPanel.setLayout(cl);
 		cardPanel.add(logScreen, "login");
-		//cardPanel.add(splScreen, "splash");
-		//cardPanel.add(mainScreen, "home");
-		//cardPanel.add(infoScreen, "info");
+		
 		cl.show(cardPanel, "login");
 		
 	}
@@ -59,6 +50,7 @@ public class StockTickerMain extends JFrame {
 	            t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            t.pack();
 	            t.setSize(frameSize);
+	            t.setMinimumSize(frameSize);
 	            t.setResizable(true);
 	            t.setVisible(true);
 	             }
