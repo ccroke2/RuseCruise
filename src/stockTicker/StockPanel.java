@@ -46,6 +46,10 @@ public class StockPanel implements ActionListener{
 		
 		stockAb = abin;
 		full = fullin;
+		if(full.length() > 40) {
+			full = full.substring(0,37);
+			full = full + "...";
+		}
 	}
 	
 	public JPanel getStockPanel() {

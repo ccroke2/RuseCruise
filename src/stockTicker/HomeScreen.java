@@ -102,11 +102,17 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				stocks = x.batchValues(sAbs);
 				tempSort = stocks;
 			}
+			String fullNameTemp;
 			for (int i = 0; i < stocks.size(); i++) {
 				JPanel stockNamesPnl = new JPanel();
 				stockNamesPnl.setLayout(new GridLayout(2,1));
 				stockNamesPnl.add(new JLabel(sAbs.get(i)));
-				stockNamesPnl.add(new JLabel(stocks.get(i).stockFullName));
+				fullNameTemp = stocks.get(i).stockFullName;
+				if(fullNameTemp.length() > 40) {
+					fullNameTemp = fullNameTemp.substring(0,37);
+					fullNameTemp = fullNameTemp + "...";
+				}
+				stockNamesPnl.add(new JLabel(fullNameTemp));
 				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i));
 			    //allStocks.add(spnl.getStockPanel());
 			    JPanel favStockPnl = spnl.getStockPanel_info(stockNamesPnl);
