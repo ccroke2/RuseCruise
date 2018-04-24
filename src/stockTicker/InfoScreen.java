@@ -68,6 +68,9 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private String timePrompt	= "Historical Data for the Last: ";
 	private String[] timeLabels = {"Day","Month","Year","5 Years", "Year to Date"};
 	
+	private int addIn = 0;
+	ArrayList<String> favStocks = new ArrayList<String>();
+	
 	private JLabel jlbStockName;
 	private JLabel jlbStockAbr;
 	private JLabel jlbValue;
@@ -117,7 +120,23 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb, int numO) {
 		if(stockAb != null) {
-			System.out.println(numO);
+			
+			try {
+				BufferedReader in =  new BufferedReader(new FileReader("portfolio.txt"));
+	    			String inputLine;
+	    			while ((inputLine = in.readLine()) != null) {
+					String stock = inputLine.substring(0, inputLine.indexOf("\t"));
+					favStocks.add(stock);
+					if(stock.equals(stockAb)) {
+						addIn = 1;
+						jbAdd.setEnabled(false);
+					}
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+   
 			stockInfo= new APIcall(stockAb, numO);
 			stockInfo.setValues();
 			stockName = stockInfo.stockFullName;
@@ -138,7 +157,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			jlbStockName = new JLabel(stockName);
 			jlbStockAbr  = new JLabel(" - "+stockAbr);
 			jlbValue  = new JLabel(stockValue);
-			jlbReturn = new JLabel("Stock Return: $"+Double.toString(stockReturn));
+			jlbReturn = new JLabel("Stock Return: $"+String.format("%.2f", stockReturn));
 			jlbOpen   = new JLabel(stockOpen);
 			jlbHigh   = new JLabel(stockHigh);
 			jlbLow    = new JLabel(stockLow);
@@ -217,6 +236,9 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			jbBack.addActionListener(this);
 			buttonPanel.add(jbAdd);
 			jbAdd.addActionListener(this);
+			if(addIn == 1) {
+				jbAdd.setEnabled(false);
+			}
 			buttonPanel.add(jbDelete);
 			jbDelete.addActionListener(this);
 			
@@ -409,11 +431,14 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
             
             if(e.getSource()==jbAdd) {
             	try {
-                    writer = new BufferedWriter(new FileWriter("portfolio.txt", true));
-                    writer.write(stockAbr + "\t" + stockNum);
-                    writer.newLine();
-                    System.out.println("Stock added...");
-                    jbAdd.setEnabled(false);
+            		
+            		if(addIn == 0) {
+	            		writer = new BufferedWriter(new FileWriter("portfolio.txt", true));
+	            		writer.write(stockAbr + "\t" + stockNum);
+	            		writer.newLine();
+	            		System.out.println("Stock added...");
+	            		jbAdd.setEnabled(false);
+            		}
                 } 
             	catch (IOException err) {
                     System.err.println(err);
@@ -431,13 +456,13 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
             if(e.getSource()==jbStockUp) {
             	stockNum++;
             	stockReturn = stockValueNum * stockNum;
-            	jlbReturn.setText("Stock Return: $"+Double.toString(stockReturn));
+            	jlbReturn.setText("Stock Return: $"+String.format("%.2f", stockReturn));
             	jtfStockNum.setText(Integer.toString(stockNum));
             }
             if(e.getSource()==jbStockDown && stockNum>0) {
         		stockNum--;
         		stockReturn = stockValueNum * stockNum;
-        		jlbReturn.setText("Stock Return: $"+Double.toString(stockReturn));
+        		jlbReturn.setText("Stock Return: $"+String.format("%.2f", stockReturn));
         		jtfStockNum.setText(Integer.toString(stockNum));
             }
     }

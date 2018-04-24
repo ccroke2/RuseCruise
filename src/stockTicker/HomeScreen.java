@@ -93,7 +93,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				while ((inputLine = in.readLine()) != null) {
 					String stock = inputLine.substring(0, inputLine.indexOf("\t")); 
 					int numOwn = Integer.parseInt(inputLine.substring(inputLine.indexOf("\t")+1));
-					System.out.println(inputLine);
 					sAbs.add(stock);
 					numOwned_ary.add(numOwn);
 				}
@@ -115,7 +114,6 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				}
 				stockNamesPnl.add(new JLabel(fullNameTemp));
 				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i));
-				System.out.println("HOME " + stocks.get(i).numOwned);
 			    //allStocks.add(spnl.getStockPanel());
 			    JPanel favStockPnl = spnl.getStockPanel_info(stockNamesPnl);
 			    favStocksPanel.add(favStockPnl);
