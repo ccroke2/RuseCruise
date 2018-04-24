@@ -2,11 +2,7 @@ package stockTicker;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
@@ -23,12 +19,13 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 	private JButton jbInfo = new JButton("More Info");
 	private JButton jbSearch = new JButton("Search");
 	private JLabel jlbText = new JLabel("Welcome to your Ruse Cruise Stock Ticker");
+	private JLabel jlbEmptyFile = new JLabel("No Data Available.");
 	private JPanel pan = new JPanel();
 	private JPanel search = new JPanel();
 	private JPanel allStocks = new JPanel();
 	private ArrayList<JPanel> stockPanels = new ArrayList<JPanel>(20);
 	private JTextField txtSearch = new JTextField(20);
-	private JButton refresh = new JButton("refresh");
+	private JButton refresh = new JButton("Refresh");
 	private Vector<String> all_ab_full = new Vector<String>();
 	LoadDriver ld = new LoadDriver();
 	private APIcall getList = new APIcall();
@@ -83,8 +80,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		
 		//Prints out stocks from test_stocks.txt
 		try {
-			BufferedReader in =  new BufferedReader( 
-					new InputStreamReader(getClass().getClassLoader().getResourceAsStream("test_stocks.txt")));
+			BufferedReader in =  new BufferedReader(new FileReader("portfolio.txt"));
 		
 		    String inputLine;
 		    allStocks.setLayout(new GridLayout(0,1));
@@ -92,10 +88,10 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		    ArrayList<String> sAbs = new ArrayList<String>();
 		    APIcall tempCall = new APIcall();
 			if(sortIndx == 0) {
-		    while ((inputLine = in.readLine()) != null) {
-		       String stock = inputLine.substring(0, inputLine.indexOf("\t"));
-		       sAbs.add(stock);
-			}
+				while ((inputLine = in.readLine()) != null) {
+					String stock = inputLine.substring(0, inputLine.indexOf("\t"));
+					sAbs.add(stock);
+				}
 			}
 			APIcall x = new APIcall();
 			if(sortIndx == 0) {
@@ -126,7 +122,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			
 		    in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			favStocksPanel.add(jlbEmptyFile);
 			e.printStackTrace();
 		}
 		

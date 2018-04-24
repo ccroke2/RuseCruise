@@ -31,6 +31,8 @@ import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import java.net.URL;
 
+import java.io.*;
+
 //ChartMouseListener
 public class InfoScreen extends JPanel implements ActionListener, ChartMouseListener, ItemListener{
 
@@ -80,6 +82,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	
 	
 	private JButton jbBack   = new JButton("Back");
+	private JButton jbAdd   = new JButton("Add to Portfolio");
 	private JButton jbDelete = new JButton("Delete");
 	private JButton jbStockDown = new JButton("-");
 	private JButton jbStockUp	= new JButton("+");
@@ -109,7 +112,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	public SimpleDateFormat s1 = new SimpleDateFormat("MM-dd-yyyy");
 	
 	public APIcall stockInfo; 
-	
+	public BufferedWriter writer = null;
 	//I need this to work too.
 	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb) {
@@ -209,6 +212,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			
 			buttonPanel.add(jbBack);
 			jbBack.addActionListener(this);
+			buttonPanel.add(jbAdd);
+			jbAdd.addActionListener(this);
 			buttonPanel.add(jbDelete);
 			jbDelete.addActionListener(this);
 			
@@ -395,7 +400,31 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
                     		cardPanel.remove(4);
                             System.out.println("This will do something later");
                     }
+
+        
             }
+            
+            if(e.getSource()==jbAdd) {
+            	try {
+                    writer = new BufferedWriter(new FileWriter("portfolio.txt", true));
+                    writer.write(stockAbr + "\t" + stockName + "\t" + stockNum);
+                    writer.newLine();
+                    System.out.println("Stock added...");
+                    jbAdd.setEnabled(false);
+                } 
+            	catch (IOException err) {
+                    System.err.println(err);
+                } 
+            	finally {
+                        try {
+                            writer.close();
+                        } 
+                        catch (IOException err) {
+                            System.err.println(err);
+                        }
+                }
+            }
+            
             if(e.getSource()==jbStockUp) {
             	stockNum++;
             	stockReturn = stockValueNum * stockNum;
