@@ -41,8 +41,10 @@ public class SplashScreen extends JPanel {
 		
 		final CardLayout cl = clin;
 		final JPanel cardPanel = cardPanelin;
+		System.out.println(backInfo);
 	    
 		if(backInfo == 1) {
+			System.out.println("HERE");
 			SwingWorker worker = new SwingWorker<Integer, Void>() {
 			    @Override
 			    public Integer doInBackground() {
@@ -61,6 +63,7 @@ public class SplashScreen extends JPanel {
 		}
 		else {
 			try {
+				System.out.println("STUCK");
 				TimeUnit.SECONDS.sleep(1);
 			}
 			catch (Exception e) {

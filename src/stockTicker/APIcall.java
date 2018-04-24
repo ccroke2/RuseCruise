@@ -45,6 +45,7 @@ public class APIcall {
 		public double cPrice;
 		public SortedMap<Date, Double> hist = new TreeMap<Date, Double>(Collections.reverseOrder());
 		public double percent;
+		public int numOwned;
 		
 		public ArrayList<String> sNames = new ArrayList<String>();
 		public String url_string;
@@ -59,8 +60,9 @@ public class APIcall {
 
 		}
 		
-		public APIcall(String stockAb) {
+		public APIcall(String stockAb, int owned) {
 			stockName = stockAb;
+			numOwned = owned;
 		}
 		
 		public void getAllNames() {
@@ -259,7 +261,7 @@ public class APIcall {
 			return null;
 		}
 		
-		public ArrayList<APIcall> batchValues(ArrayList<String> abs){
+		public ArrayList<APIcall> batchValues(ArrayList<String> abs, ArrayList<Integer> nOwned){
 			url_string = "https://api.iextrading.com/1.0/stock/market/batch?symbols=";
 			for (int i = 0; i < abs.size(); i++) {
 				url_string = url_string + abs.get(i);
@@ -297,6 +299,8 @@ public class APIcall {
 				get2 = (tempjob.get("previousClose")).toString();
 				double lastClose = (Double.parseDouble(get2));
 				temp.percent = (temp.cPrice-lastClose)/lastClose * 100;
+				
+				temp.numOwned = nOwned.get(j);
 				
 				values.add(temp);
 			}

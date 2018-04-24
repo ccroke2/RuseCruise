@@ -86,16 +86,21 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		    allStocks.setLayout(new GridLayout(0,1));
 		    favStocksPanel.setLayout(new GridLayout(0,1));
 		    ArrayList<String> sAbs = new ArrayList<String>();
+		    ArrayList<Integer> numOwned_ary = new ArrayList<Integer>();
 		    APIcall tempCall = new APIcall();
+		    String tempStr;
 			if(sortIndx == 0) {
 				while ((inputLine = in.readLine()) != null) {
-					String stock = inputLine.substring(0, inputLine.indexOf("\t"));
+					String stock = inputLine.substring(0, inputLine.indexOf("\t")); 
+					int numOwn = Integer.parseInt(inputLine.substring(inputLine.indexOf("\t")+1));
+					System.out.println(inputLine);
 					sAbs.add(stock);
+					numOwned_ary.add(numOwn);
 				}
 			}
 			APIcall x = new APIcall();
 			if(sortIndx == 0) {
-				stocks = x.batchValues(sAbs);
+				stocks = x.batchValues(sAbs,numOwned_ary);
 				tempSort = stocks;
 			}
 			String fullNameTemp;
@@ -110,6 +115,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				}
 				stockNamesPnl.add(new JLabel(fullNameTemp));
 				StockPanel spnl = new StockPanel(cl, cardPanel,stocks.get(i));
+				System.out.println("HOME " + stocks.get(i).numOwned);
 			    //allStocks.add(spnl.getStockPanel());
 			    JPanel favStockPnl = spnl.getStockPanel_info(stockNamesPnl);
 			    favStocksPanel.add(favStockPnl);
@@ -272,7 +278,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				cardPanel.remove(2);
 				SplashScreen temp = new SplashScreen(cl, cardPanel, 1);
 				cardPanel.add(temp, "splash");
-				cl.next(cardPanel);
+				cl.show(cardPanel, "splash");
 			}
 			if(e.getSource()==jbLogOut) {
 				cl.first(cardPanel);

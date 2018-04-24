@@ -24,6 +24,7 @@ public class StockPanel implements ActionListener{
  	private JLabel cLbl;
  	private double perc;
  	private JLabel picLabel;
+ 	private int numO;
 
  	private String full;
 
@@ -38,6 +39,7 @@ public class StockPanel implements ActionListener{
 
 		sCall = sCallin;
 		stockAb = sCall.stockName;
+		numO = sCall.numOwned;
 	}
 	
 	public StockPanel(CardLayout clin, JPanel cardPanelin, String abin, String fullin) {
@@ -123,13 +125,13 @@ public class StockPanel implements ActionListener{
 		if(e.getSource()==btn) {
 			System.out.println("clicked");
 			String xName = stockAb;
-			cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
+			cardPanel.add(new InfoScreen(cl, cardPanel, xName, numO),xName);
 			cl.show(cardPanel, xName);
 		}
 		if(e.getSource()==btn2) {
 			System.out.println("clicked");
 			String xName = stockAb;
-			cardPanel.add(new InfoScreen(cl, cardPanel, xName),xName);
+			cardPanel.add(new InfoScreen(cl, cardPanel, xName, 0),xName);
 			cl.show(cardPanel, xName);
 		}
 	}

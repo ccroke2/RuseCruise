@@ -87,7 +87,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private JButton jbStockDown = new JButton("-");
 	private JButton jbStockUp	= new JButton("+");
 	
-	private JTextField jtfStockNum = new JTextField("0");
+	private JTextField jtfStockNum;
 	private JComboBox<String> jcbxTimePeriod = new JComboBox(timeLabels);
 	
 	private JPanel stockInfoPanel   = new JPanel();
@@ -115,22 +115,25 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	public BufferedWriter writer = null;
 	//I need this to work too.
 	
-	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb) {
+	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb, int numO) {
 		if(stockAb != null) {
-			stockInfo= new APIcall(stockAb);
+			System.out.println(numO);
+			stockInfo= new APIcall(stockAb, numO);
 			stockInfo.setValues();
 			stockName = stockInfo.stockFullName;
 			stockAbr = stockAb;
 			stockCurPrice = stockInfo.cPrice;
 			stockValue   = " Current Value: "+ Double.toString(stockCurPrice);
 			stockValueNum = stockCurPrice;
-			stockReturn = stockValueNum * stockNum;
 			stockOpen    = "Open: " + Double.toString(stockInfo.openPrice);
 			stockHigh    = "High: " + Double.toString(stockInfo.highPrice);
 			stockLow     = "Low: " + Double.toString(stockInfo.lowPrice);
 			stockClose   = "Close: " + Double.toString(stockInfo.closePrice);
 			String perc = String.format("%.2f",stockInfo.percent);
 			stockPerc    = perc + "%";
+			stockNum = stockInfo.numOwned;
+			jtfStockNum = new JTextField(Integer.toString(stockNum));
+			stockReturn = stockValueNum * stockNum;
 			
 			jlbStockName = new JLabel(stockName);
 			jlbStockAbr  = new JLabel(" - "+stockAbr);
@@ -407,7 +410,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
             if(e.getSource()==jbAdd) {
             	try {
                     writer = new BufferedWriter(new FileWriter("portfolio.txt", true));
-                    writer.write(stockAbr + "\t" + stockName + "\t" + stockNum);
+                    writer.write(stockAbr + "\t" + stockNum);
                     writer.newLine();
                     System.out.println("Stock added...");
                     jbAdd.setEnabled(false);
