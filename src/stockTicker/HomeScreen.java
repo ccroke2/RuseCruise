@@ -72,6 +72,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		all_ab_full.addAll(getList.sFull);
 
 		searchPanel.add(txtSearch);
+		txtSearch.addActionListener(this);
 		searchPanel.add(jbSearch);
 		jbSearch.addActionListener(this);
 		
@@ -284,7 +285,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			if(e.getSource()==jbInfo) {
 				cl.next(cardPanel);
 			}
-			if(e.getSource()==jbSearch) {
+			if(e.getSource()==jbSearch || e.getSource()==txtSearch) {
 				String xName;
 				JPanel searchStocks = new JPanel();
 				searchStocks.setLayout(new GridLayout(0,1));

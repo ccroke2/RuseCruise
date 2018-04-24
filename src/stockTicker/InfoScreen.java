@@ -114,8 +114,12 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	
 	public SimpleDateFormat s1 = new SimpleDateFormat("MM-dd-yyyy");
 	
-	public APIcall stockInfo; 
+	public APIcall stockInfo;
+	public BufferedReader reader = null;
 	public BufferedWriter writer = null;
+	File inputFile = new File("portfolio.txt");
+	File tempFile = new File("tempFile.txt");
+	boolean successful = false;
 	//I need this to work too.
 	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb, int numO) {
@@ -260,6 +264,30 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 		}
 	}
 	
+	private void deleteStock(String lineToDelete) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+		
+			String currentLine;
+		
+			while((currentLine = reader.readLine()) != null) {
+	            if(currentLine != null && !currentLine.equals(lineToDelete)){
+	                writer.write(currentLine + System.getProperty("line.separator"));
+	            }
+	        }
+			if (writer != null) {
+				writer.close();
+				}
+				if (reader != null) {
+				reader.close();
+				}
+				boolean successful = tempFile.renameTo(inputFile);
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -423,6 +451,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
                     if(deleteStock==JOptionPane.YES_OPTION) {
                     		cl.previous(cardPanel);
                     		cardPanel.remove(4);
+                    		deleteStock(stockAbr + "\t" + stockNum);
                             System.out.println("This will do something later");
                     }
 
