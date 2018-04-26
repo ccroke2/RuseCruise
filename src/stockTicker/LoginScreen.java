@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-public class LoginScreen2 extends JPanel implements ActionListener {
+public class LoginScreen extends JPanel implements ActionListener {
 	
 	JPanel panel = new JPanel() {
 		@Override
@@ -40,7 +40,7 @@ public class LoginScreen2 extends JPanel implements ActionListener {
 	JPanel cardPanel;
 	CardLayout cl;
 	
-	public LoginScreen2(CardLayout clin, JPanel cardPanelin) {
+	publicLoginScreen2(CardLayout clin, JPanel cardPanelin) {
 		
 		//components needed to switch panels
 		cl = clin;

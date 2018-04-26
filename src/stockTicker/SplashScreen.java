@@ -15,32 +15,40 @@ import java.util.concurrent.TimeUnit;
 
 public class SplashScreen extends JPanel {
 	
-	private String loadInfo = "Loading ...";
-	private JLabel jlbLoad = new JLabel(loadInfo);
-	private JLabel jlbWait = new JLabel("Please Wait");
-	private JButton jbNext = new JButton("Next");
-	
-	
+	private JLabel jlbLoad = new JLabel("Loading ...");
+	private JLabel jlbBlank = new JLabel ("  ");
+	private JLabel jlbBlank2 = new JLabel ("  ");
+	private JPanel textPanel = new JPanel();
+	private Font labelFont = new Font("IMPACT", Font.ITALIC, 40);
 	
 	public SplashScreen(CardLayout clin, JPanel cardPanelin, int backInfo) {
+		final CardLayout cl = clin;
+		final JPanel cardPanel = cardPanelin;
 		
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
-		//jlbLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//add(jlbLoad, BorderLayout.CENTER);
+
 		JPanel temp = new JPanel();
 		temp.setLayout(new BorderLayout());
-		jlbWait.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(jlbWait, BorderLayout.SOUTH);
+		
+		jlbLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jlbLoad.setAlignmentY(Component.TOP_ALIGNMENT);
+		jlbLoad.setFont(labelFont);
+		jlbBlank.setFont(labelFont);
+		jlbBlank2.setFont(labelFont);
+		textPanel.setBackground(Color.WHITE);
+		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+		textPanel.add(jlbLoad);
+		textPanel.add(jlbBlank);
+		textPanel.add(jlbBlank2);
+		add(textPanel, BorderLayout.SOUTH);
+
 		URL url = getClass().getResource("/loader.gif");
         Icon icon = new ImageIcon(url);
         JLabel label = new JLabel(icon);
         temp.add(label, BorderLayout.CENTER);
 		temp.setBackground(Color.WHITE);
 		add(temp,BorderLayout.CENTER);
-		
-		final CardLayout cl = clin;
-		final JPanel cardPanel = cardPanelin;
 	    
 		if(backInfo == 1) {
 			SwingWorker worker = new SwingWorker<Integer, Void>() {
@@ -66,27 +74,6 @@ public class SplashScreen extends JPanel {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			//SplashScreen splScreen = new SplashScreen(cl, cardPanel, 1);
-			//cardPanel.add(splScreen, "splash");
-			//cl.show(cardPanel,"splash");
 		}
 	}
-	
-	/*
-	public void goToHome(CardLayout clin, JPanel cardPanelin) {
-		cl = clin;
-		cardPanel = cardPanelin;
-		
-		System.out.println("third");
-		try {
-    			TimeUnit.SECONDS.sleep(3);
-	    }
-	    catch(Exception e) {
-	    		e.printStackTrace();
-	    }
-		
-		HomeScreen mainScreen = new HomeScreen(cl, cardPanel);
-        cardPanel.add(mainScreen, "main");
-        cl.next(cardPanel);
-	}*/
 }

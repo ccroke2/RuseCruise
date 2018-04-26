@@ -13,21 +13,21 @@ import javax.swing.ImageIcon;
 
 public class StockPanel implements ActionListener{
 	
+	private int numO;
+	private double perc;
+	private String full;
 	public String stockAb;
 	
+	private JButton btn = new JButton("More");
+	private JButton btn2 = new JButton("More");
+	
+	private JLabel pLbl;
+ 	private JLabel cLbl;
+ 	private JLabel picLabel;
 	private JPanel pnl = new JPanel();
 	private JPanel pnl2 = new JPanel();
 	private JPanel percPnl = new JPanel();
-	private JButton btn = new JButton("More");
-	private JButton btn2 = new JButton("More");
-	private JLabel pLbl;
- 	private JLabel cLbl;
- 	private double perc;
- 	private JLabel picLabel;
- 	private int numO;
-
- 	private String full;
-
+	
 	private APIcall sCall;
 	
 	CardLayout cl;
@@ -54,9 +54,8 @@ public class StockPanel implements ActionListener{
 		}
 	}
 	
-	public JPanel getStockPanel() {
-		pnl2.setLayout(new FlowLayout());
-		pnl2.setPreferredSize(new Dimension(175, 50));
+	public JPanel getStockPanel(int w) {
+		pnl2.setPreferredSize(new Dimension(w, 50));
 		pnl2.setLayout(new BoxLayout(pnl2, BoxLayout.X_AXIS));
 		JPanel temp = new JPanel();
 		temp.setLayout(new GridLayout(2,1));
@@ -73,11 +72,10 @@ public class StockPanel implements ActionListener{
 	}
 	
 	public JPanel getStockPanel_info(JPanel infoPnl) {
-		pnl.setLayout(new FlowLayout());
 		perc = sCall.percent;
 		cLbl = new JLabel(Double.toString(sCall.cPrice));
 		String perc1 = String.format("%.2f",perc);
-		perc1    = perc1 + "%";
+		perc1 = perc1 + "%";
  		pLbl = new JLabel(perc1);
 		pnl.setPreferredSize(new Dimension(175, 50));
 		pnl.setLayout(new BoxLayout(pnl, BoxLayout.X_AXIS));
@@ -122,16 +120,10 @@ public class StockPanel implements ActionListener{
  	}
 
 	public void actionPerformed (ActionEvent e) {
-		if(e.getSource()==btn) {
+		if(e.getSource()==btn || e.getSource()==btn2) {
 			System.out.println("clicked");
 			String xName = stockAb;
 			cardPanel.add(new InfoScreen(cl, cardPanel, xName, numO),xName);
-			cl.show(cardPanel, xName);
-		}
-		if(e.getSource()==btn2) {
-			System.out.println("clicked");
-			String xName = stockAb;
-			cardPanel.add(new InfoScreen(cl, cardPanel, xName, 0),xName);
 			cl.show(cardPanel, xName);
 		}
 	}

@@ -23,7 +23,7 @@ public class StockTickerMain extends JFrame {
 	static Dimension frameSize = new Dimension(1000,600);
 	
 	SplashScreen splScreen;
-	LoginScreen2 logScreen;
+	LoginScreen logScreen;
 	//HomeScreen mainScreen;
 	InfoScreen infoScreen;
 	CardLayout cl = new CardLayout();
@@ -33,7 +33,7 @@ public class StockTickerMain extends JFrame {
 		setTitle("Stock Ticker");
 		add(cardPanel);
 		
-		logScreen = new LoginScreen2(cl, cardPanel);
+		logScreen = new LoginScreen(cl, cardPanel);
 
 		cardPanel.setLayout(cl);
 		cardPanel.add(logScreen, "login");
