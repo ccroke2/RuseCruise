@@ -123,8 +123,15 @@ public class StockPanel implements ActionListener{
 		if(e.getSource()==btn || e.getSource()==btn2) {
 			System.out.println("clicked");
 			String xName = stockAb;
+			try {
 			cardPanel.add(new InfoScreen(cl, cardPanel, xName, numO),xName);
 			cl.show(cardPanel, xName);
+			}
+			catch(Exception ex) {
+				JOptionPane.showMessageDialog(null,
+						"Could not retrieve information for " + xName + ".",
+						"No Stock Info", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 }
