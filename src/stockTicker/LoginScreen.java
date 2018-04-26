@@ -28,7 +28,7 @@ public class LoginScreen extends JPanel implements ActionListener {
 	
 	private JButton jbEnter   = new JButton("Enter");
 	private JButton jbNewUser = new JButton("New User?");
-	private JLabel jlbDisclaimer  = new JLabel("ALPHA 1.0.0");
+	private JLabel jlbDisclaimer  = new JLabel("BETA 2.0.0");
 	private JLabel jlbPassPrompt  = new JLabel("Enter the password:");
 	private JPasswordField passwordField = new JPasswordField(25);
 	

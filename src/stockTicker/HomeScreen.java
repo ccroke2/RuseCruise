@@ -286,14 +286,22 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 						searchResultStocks.add(temp);
 					}
 				}
-				int gridSize = searchResultStocks.size();
-				searchStocks.setLayout(new GridLayout(gridSize,1));
-				if (gridSize <= 10) {
-					gridSize = 11 - gridSize;
-					searchStocks.setLayout(new GridLayout(10, 1));
-					}
-				for(int i=0; i<searchResultStocks.size(); i++)
-					searchStocks.add(searchResultStocks.get(i));
+				
+				if (searchResultStocks.size() == 0) {
+					JLabel noStocks = new JLabel("No search results found for \""+ xName + "\", please search again.");
+					searchStocks.add(noStocks);
+					count = 1;
+				}
+				if(count == 0) {
+					int gridSize = searchResultStocks.size();
+					searchStocks.setLayout(new GridLayout(gridSize,1));
+					if (gridSize <= 10) {
+						gridSize = 11 - gridSize;
+						searchStocks.setLayout(new GridLayout(10, 1));
+						}
+					for(int i=0; i<searchResultStocks.size(); i++)
+						searchStocks.add(searchResultStocks.get(i));
+				}
 				resultsPane.setViewportView(searchStocks);
 			}
 		}
