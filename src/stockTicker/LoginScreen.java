@@ -40,7 +40,7 @@ public class LoginScreen extends JPanel implements ActionListener {
 	JPanel cardPanel;
 	CardLayout cl;
 	
-	publicLoginScreen2(CardLayout clin, JPanel cardPanelin) {
+	public LoginScreen(CardLayout clin, JPanel cardPanelin) {
 		
 		//components needed to switch panels
 		cl = clin;
