@@ -74,9 +74,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 			BufferedReader in =  new BufferedReader(new FileReader("portfolio.txt"));
 		    String inputLine;
 		    allStocks.setLayout(new GridLayout(0,1));
-		    favStocksPanel.setLayout(new GridLayout(pnlList.size(), 1));
-			if(pnlList.size() <= 10)
-				favStocksPanel.setLayout(new GridLayout(5, 1));
+		    favStocksPanel.setLayout(new GridLayout(0, 1));
 		    ArrayList<String> sAbs = new ArrayList<String>();
 		    ArrayList<Integer> numOwned_ary = new ArrayList<Integer>();
 		    APIcall tempCall = new APIcall();
@@ -94,6 +92,8 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				stocks = x.batchValues(sAbs,numOwned_ary);
 				tempSort = stocks;
 			}
+			if(sAbs.size() < 10)
+				favStocksPanel.setLayout(new GridLayout(9, 1));
 			String fullNameTemp;
 			for (int i = 0; i < stocks.size(); i++) {
 				JPanel stockNamesPnl = new JPanel();
@@ -293,12 +293,9 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 					count = 1;
 				}
 				if(count == 0) {
-					int gridSize = searchResultStocks.size();
-					searchStocks.setLayout(new GridLayout(gridSize,1));
-					if (gridSize <= 10) {
-						gridSize = 11 - gridSize;
-						searchStocks.setLayout(new GridLayout(10, 1));
-						}
+					searchStocks.setLayout(new GridLayout(0,1));
+					if (searchResultStocks.size() < 10)
+						searchStocks.setLayout(new GridLayout(9, 1));
 					for(int i=0; i<searchResultStocks.size(); i++)
 						searchStocks.add(searchResultStocks.get(i));
 				}
@@ -313,11 +310,11 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 					JPanel a = new JPanel();
 					JPanel c = new JPanel();
 					JPanel p = new JPanel();
-					n.setLayout(new GridLayout(pnlList.size(), 1));
-					a.setLayout(new GridLayout(pnlList.size(), 1));
-					c.setLayout(new GridLayout(pnlList.size(), 1));
-					p.setLayout(new GridLayout(pnlList.size(), 1));
-					if(pnlList.size() <= 10) {
+					n.setLayout(new GridLayout(0, 1));
+					a.setLayout(new GridLayout(0, 1));
+					c.setLayout(new GridLayout(0, 1));
+					p.setLayout(new GridLayout(0, 1));
+					if(staticSort.size() < 10) {
 						n.setLayout(new GridLayout(9, 1));
 						a.setLayout(new GridLayout(9, 1));
 						c.setLayout(new GridLayout(9, 1));

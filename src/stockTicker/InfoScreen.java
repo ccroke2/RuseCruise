@@ -39,19 +39,8 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	CardLayout cl;
 	JPanel cardPanel;
 	
-	/*
-	try {
-		BufferedImage statusArrowRed = ImageIO.read(getClass().getResource("/2000px-Red_Arrow_Down.svg.png"));
-		private JLabel jlbArrowRed = new JLabel(statusArrowRed);
-		BufferedImage statusArrowGreen = ImageIO.read(getClass().getResource("/Green_Arrow_Up_Darker.svg.png"));
-		private JLabel jlbArrowGreen = new JLabel(statusArrowGreen);
-	}
-	catch(Exception e) {
-		System.out.println("Bad read");
-		System.out.println(e);
-	}
-	*/
 	private int stockNum = 0;
+	private int addIn = 0;
 	
 	private String stockName;
 	private String stockAbr;
@@ -68,7 +57,6 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	private String timePrompt	= "Historical Data for the Last: ";
 	private String[] timeLabels = {"Day","Month","Year","5 Years", "Year to Date"};
 	
-	private int addIn = 0;
 	ArrayList<String> favStocks = new ArrayList<String>();
 	
 	private JLabel jlbStockName;
@@ -120,7 +108,6 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	File inputFile = new File("portfolio.txt");
 	File tempFile = new File("tempFile.txt");
 	boolean successful = false;
-	//I need this to work too.
 	
 	public InfoScreen(CardLayout clin, JPanel cardPanelin, String stockAb, int numO) {
 		if(stockAb != null) {
