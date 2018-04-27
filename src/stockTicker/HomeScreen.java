@@ -99,6 +99,7 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				JPanel stockNamesPnl = new JPanel();
 				stockNamesPnl.setLayout(new GridLayout(2,1));
 				stockNamesPnl.add(new JLabel(sAbs.get(i)));
+				stockNamesPnl.setBackground(Color.decode("#F4F4F4"));
 				fullNameTemp = stocks.get(i).stockFullName;
 				if(fullNameTemp.length() > 40) {
 					fullNameTemp = fullNameTemp.substring(0,37);
@@ -150,10 +151,19 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 		jbRefresh.addActionListener(this);
 		jbLogOut.addActionListener(this);
 		
+		upperPanel.setBackground(Color.WHITE);
+		holderPanel.setBackground(Color.WHITE);
+		portPane.setBackground(Color.WHITE);
+		resultsPane.setBackground(Color.WHITE);
+		functionsPanel.setBackground(Color.WHITE);
+		sortPanel.setBackground(Color.WHITE);
+		searchPanel.setBackground(Color.WHITE);
+		favStocksPanel.setBackground(Color.decode("#ECEBEB"));
+		allStocks.setBackground(Color.decode("#ECEBEB"));
+		
 		add(upperPanel, BorderLayout.NORTH);
 		add(holderPanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
-
 	}
 	
 	//////////////////// Sorting Methods \\\\\\\\\\\\\\\\\\\\

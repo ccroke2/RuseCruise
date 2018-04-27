@@ -47,7 +47,7 @@ public class LoginScreen extends JPanel implements ActionListener {
 		cardPanel = cardPanelin;
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBorder(new LineBorder(Color.BLACK, 5));
+		//panel.setBorder(new LineBorder(Color.BLACK, 5));
 		add(panel);
 		
 		//sets the alignment of all the components to be centered
@@ -71,6 +71,8 @@ public class LoginScreen extends JPanel implements ActionListener {
 		jbNewUser.addActionListener(this);
 		panel.add(Box.createRigidArea(new Dimension(0,50)));
 		panel.add(jlbDisclaimer);
+		panel.setBackground(Color.WHITE);
+		setBackground(Color.WHITE);
 		
 	}
 	

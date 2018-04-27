@@ -236,7 +236,10 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			add(stockInfoPanel, BorderLayout.NORTH);
 			add(shellChartPanel, BorderLayout.CENTER);
 			add(buttonPanel, BorderLayout.SOUTH);
-			
+			stockInfoPanel.setBackground(Color.WHITE);
+			stockStatusPanel.setBackground(Color.WHITE);
+			stockNumPanel.setBackground(Color.WHITE);
+			timeDropPanel.setBackground(Color.WHITE);
 		}
 	}
 	

@@ -63,10 +63,12 @@ public class StockPanel implements ActionListener{
 		JLabel nmF = new JLabel(full);
 		temp.add(nmA);
 		temp.add(nmF);
+		temp.setBackground(Color.decode("#F4F4F4"));
 		pnl2.add(temp);
 		pnl2.add(btn2);
 		btn2.addActionListener(this);
 		pnl2.setBorder(new LineBorder(Color.BLACK, 2));
+		pnl2.setBackground(Color.decode("#F4F4F4"));
 		
 		return pnl2;
 	}
@@ -99,12 +101,14 @@ public class StockPanel implements ActionListener{
 	 		pnl.add(cLbl);
 	 		percPnl.add(pLbl);
 	 		percPnl.add(picLabel);
+	 		percPnl.setBackground(Color.decode("#F4F4F4"));
 	 		pnl.add(percPnl);}
 	 		catch(Exception e){
 	 			e.printStackTrace();
 	 		}
 	 		pnl.add(btn);
 		
+	 		pnl.setBackground(Color.decode("#F4F4F4"));
 		return pnl;
 	}
 	
