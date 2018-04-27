@@ -288,12 +288,16 @@ public class HomeScreen extends JPanel implements ActionListener, ItemListener {
 				int pnlWidth = (resultsPane.getViewport().getSize().width)-15;
 				JPanel searchStocks = new JPanel();
 				ArrayList<JPanel> searchResultStocks = new ArrayList<JPanel>();
+				ArrayList<Integer> addedResults = new ArrayList<Integer>();
 				for (int i = 0; i < all_ab_full.size(); i++) {
 					indx = i%getList.sFullAbr.size();
-					if(all_ab_full.get(i).toUpperCase().contains(xName)) {
-						StockPanel spnl = new StockPanel(cl, cardPanel,getList.sFullAbr.get(indx), getList.sFull.get(indx));
-						JPanel temp = spnl.getStockPanel(pnlWidth);
-						searchResultStocks.add(temp);
+					if(!addedResults.contains(indx)) {
+						if(all_ab_full.get(i).toUpperCase().contains(xName)) {
+							addedResults.add(indx);
+							StockPanel spnl = new StockPanel(cl, cardPanel,getList.sFullAbr.get(indx), getList.sFull.get(indx));
+							JPanel temp = spnl.getStockPanel(pnlWidth);
+							searchResultStocks.add(temp);
+						}
 					}
 				}
 				
