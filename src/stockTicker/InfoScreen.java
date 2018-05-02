@@ -40,6 +40,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	JPanel cardPanel;
 	
 	private int stockNum = 0;
+	private int initialStockNum = 0;
 	private int addIn = 0;
 	
 	private String stockName;
@@ -73,7 +74,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	
 	
 	private JButton jbBack   = new JButton("Back");
-	private JButton jbAdd   = new JButton("Add to Portfolio");
+	private JButton jbAdd   = new JButton("Add/Update Stock");
 	private JButton jbDelete = new JButton("Delete");
 	private JButton jbStockDown = new JButton("-");
 	private JButton jbStockUp	= new JButton("+");
@@ -120,7 +121,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 					favStocks.add(stock);
 					if(stock.equals(stockAb)) {
 						addIn = 1;
-						jbAdd.setEnabled(false);
+						jbDelete.setEnabled(true);
 					}
 				}
 			}
@@ -142,6 +143,7 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			String perc = String.format("%.2f",stockInfo.percent);
 			stockPerc    = perc + "%";
 			stockNum = stockInfo.numOwned;
+			initialStockNum = stockNum;
 			jtfStockNum = new JTextField(Integer.toString(stockNum));
 			stockReturn = stockValueNum * stockNum;
 			
@@ -227,10 +229,13 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			jbBack.addActionListener(this);
 			buttonPanel.add(jbAdd);
 			jbAdd.addActionListener(this);
-			if(addIn == 1) {
-				jbAdd.setEnabled(false);
-			}
 			buttonPanel.add(jbDelete);
+			if(addIn == 1) {
+				jbDelete.setEnabled(true);
+			}
+			else {
+				jbDelete.setEnabled(false);
+			}
 			jbDelete.addActionListener(this);
 			
 			add(stockInfoPanel, BorderLayout.NORTH);
@@ -253,7 +258,27 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 			return null;
 		}
 	}
-	
+
+	private void writeStock(String lineToWrite) {
+		try {
+        		writer = new BufferedWriter(new FileWriter(inputFile, true));
+        		writer.write(lineToWrite);
+        		writer.newLine();
+        		System.out.println("Stock added...");
+        		//jbAdd.setEnabled(false);
+        } 
+    	catch (IOException err) {
+            System.err.println(err);
+        } 
+    	finally {
+                try {
+                    writer.close();
+                } 
+                catch (IOException err) {
+                    System.err.println(err);
+                }
+        }
+	}
 	private void deleteStock(String lineToDelete) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -428,57 +453,43 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
 	//ActionListener for Enter and NewUser buttons, creates DialogBoxes
     @Override
     public void actionPerformed (ActionEvent e) {
-            if(e.getSource()==jbBack) {
+            if (e.getSource()==jbBack) {
             			cl.previous(cardPanel);
             			cardPanel.remove(cardPanel.getComponentCount() -1);
-                    System.out.println("back button working");
+            			System.out.println("Returning home...");
             }
-            if(e.getSource()==jbDelete) {
+            if (e.getSource()==jbDelete) {
                     int deleteStock = JOptionPane.showConfirmDialog(
                                     null, "Are you sure you want to delete this "
                                     +"stock from your portfolio?", "Confirm Stock Delete", 
                                     JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                    if(deleteStock==JOptionPane.YES_OPTION) {
+                    if (deleteStock==JOptionPane.YES_OPTION) {
                     		cl.previous(cardPanel);
                     		cardPanel.remove(4);
-                    		deleteStock(stockAbr + "\t" + stockNum);
-                            System.out.println("This will do something later");
+                    		deleteStock(stockAbr + "\t" + initialStockNum);
+                            System.out.println("This stock has been deleted.");
                     }
 
         
             }
             
-            if(e.getSource()==jbAdd) {
-            	try {
-            		
-            		if(addIn == 0) {
-	            		writer = new BufferedWriter(new FileWriter("portfolio.txt", true));
-	            		writer.write(stockAbr + "\t" + stockNum);
-	            		writer.newLine();
-	            		System.out.println("Stock added...");
-	            		jbAdd.setEnabled(false);
-            		}
-                } 
-            	catch (IOException err) {
-                    System.err.println(err);
-                } 
-            	finally {
-                        try {
-                            writer.close();
-                        } 
-                        catch (IOException err) {
-                            System.err.println(err);
-                        }
-                }
+            if (e.getSource()==jbAdd) {
+            	if(addIn == 0) {
+            		writeStock(stockAbr + "\t" + stockNum);
+            	}
+            	else if(addIn == 1) {
+            		deleteStock(stockAbr + "\t" + initialStockNum);
+            		writeStock(stockAbr + "\t" + stockNum);
+            	}
             }
             
-            if(e.getSource()==jbStockUp) {
+            if (e.getSource()==jbStockUp) {
             	stockNum++;
             	stockReturn = stockValueNum * stockNum;
             	jlbReturn.setText("Stock Return: $"+String.format("%.2f", stockReturn));
             	jtfStockNum.setText(Integer.toString(stockNum));
             }
-            if(e.getSource()==jbStockDown && stockNum>0) {
+            if (e.getSource()==jbStockDown && stockNum>0) {
         		stockNum--;
         		stockReturn = stockValueNum * stockNum;
         		jlbReturn.setText("Stock Return: $"+String.format("%.2f", stockReturn));
@@ -528,14 +539,3 @@ public class InfoScreen extends JPanel implements ActionListener, ChartMouseList
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
